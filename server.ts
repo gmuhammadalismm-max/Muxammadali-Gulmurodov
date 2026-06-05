@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import dns from "dns";
+import fs from "fs";
 import { GoogleGenAI } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
@@ -9,6 +10,8 @@ dotenv.config();
 
 const app = express();
 const PORT = 3000;
+
+const DB_PATH = path.join(process.cwd(), "db.json");
 
 // Initialize Gemini SDK with telemetry header according to guidelines
 const apiKey = process.env.GEMINI_API_KEY;
@@ -25,7 +28,46 @@ if (apiKey && apiKey !== "MY_GEMINI_API_KEY") {
   });
 }
 
-app.use(express.json());
+// Increase JSON limit so base64 videos/images upload seamlessly
+app.use(express.json({ limit: "250mb" }));
+app.use(express.urlencoded({ limit: "250mb", extended: true }));
+
+// API: Get entire Database state
+app.get("/api/db", (req, res) => {
+  let db: any = {};
+  if (fs.existsSync(DB_PATH)) {
+    try {
+      db = JSON.parse(fs.readFileSync(DB_PATH, "utf-8"));
+    } catch (err) {
+      console.error("Error reading db.json:", err);
+    }
+  }
+  res.json({ success: true, db });
+});
+
+// API: Update Database state (supports incremental/block updates)
+app.post("/api/db", (req, res) => {
+  try {
+    let existingDb: any = {};
+    if (fs.existsSync(DB_PATH)) {
+      try {
+        existingDb = JSON.parse(fs.readFileSync(DB_PATH, "utf-8"));
+      } catch (err) {
+        // empty or corrupted file
+      }
+    }
+
+    // Merge changes
+    const mergedDb = { ...existingDb, ...req.body };
+
+    // Write back
+    fs.writeFileSync(DB_PATH, JSON.stringify(mergedDb, null, 2), "utf-8");
+    res.json({ success: true, message: "Database saved successfully" });
+  } catch (err: any) {
+    console.error("Error writing to db.json:", err);
+    res.status(500).json({ error: "Could not save database changes", details: err.message });
+  }
+});
 
 // API: Check status
 app.get("/api/health", (req, res) => {

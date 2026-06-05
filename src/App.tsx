@@ -318,6 +318,7 @@ export default function App() {
   const changeTheme = (newTheme: "cyan" | "emerald" | "rose" | "amber") => {
     setActiveTheme(newTheme);
     localStorage.setItem("gmuhammadali_active_theme", newTheme);
+    saveToServer({ activeTheme: newTheme });
   };
 
   // Durable persistent states with defaults fallback
@@ -370,6 +371,161 @@ export default function App() {
     const saved = localStorage.getItem("gmuhammadali_analytics");
     return saved ? JSON.parse(saved) : DEFAULT_ANALYTICS;
   });
+
+  // Load initial data from server DB on mount
+  useEffect(() => {
+    fetch("/api/db")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.db) {
+          const db = data.db;
+          if (db.activeTheme) {
+            setActiveTheme(db.activeTheme);
+            localStorage.setItem("gmuhammadali_active_theme", db.activeTheme);
+          }
+          if (db.projects) {
+            setProjects(db.projects);
+            localStorage.setItem("gmuhammadali_projects", JSON.stringify(db.projects));
+          }
+          if (db.skillCategories) {
+            setSkillCategories(db.skillCategories);
+            localStorage.setItem("gmuhammadali_skills", JSON.stringify(db.skillCategories));
+          }
+          if (db.experiences) {
+            setExperiences(db.experiences);
+            localStorage.setItem("gmuhammadali_experience", JSON.stringify(db.experiences));
+          }
+          if (db.messages) {
+            setMessages(db.messages);
+            localStorage.setItem("gmuhammadali_messages", JSON.stringify(db.messages));
+          }
+          if (db.branding) {
+            setBranding(db.branding);
+            localStorage.setItem("gmuhammadali_branding", JSON.stringify(db.branding));
+          }
+          if (db.articles) {
+            setArticles(db.articles);
+            localStorage.setItem("gmuhammadali_articles", JSON.stringify(db.articles));
+          }
+          if (db.videos) {
+            setVideos(db.videos);
+            localStorage.setItem("gmuhammadali_videos", JSON.stringify(db.videos));
+          }
+          if (db.images) {
+            setImages(db.images);
+            localStorage.setItem("gmuhammadali_images", JSON.stringify(db.images));
+          }
+          if (db.seoSettings) {
+            setSeoSettings(db.seoSettings);
+            localStorage.setItem("gmuhammadali_seo", JSON.stringify(db.seoSettings));
+          }
+          if (db.analytics) {
+            setAnalytics(db.analytics);
+            localStorage.setItem("gmuhammadali_analytics", JSON.stringify(db.analytics));
+          }
+        }
+      })
+      .catch((err) => console.error("Error reading central DB cache:", err));
+  }, []);
+
+  const saveToServer = (updatedFields: any) => {
+    fetch("/api/db", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedFields),
+    })
+    .catch((err) => console.error("Error writing central DB state:", err));
+  };
+
+  const updateProjects = (updater: React.SetStateAction<Project[]>) => {
+    setProjects((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_projects", JSON.stringify(next));
+      saveToServer({ projects: next });
+      return next;
+    });
+  };
+
+  const updateSkillCategories = (updater: React.SetStateAction<SkillCategory[]>) => {
+    setSkillCategories((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_skills", JSON.stringify(next));
+      saveToServer({ skillCategories: next });
+      return next;
+    });
+  };
+
+  const updateExperiences = (updater: React.SetStateAction<Experience[]>) => {
+    setExperiences((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_experience", JSON.stringify(next));
+      saveToServer({ experiences: next });
+      return next;
+    });
+  };
+
+  const updateMessages = (updater: React.SetStateAction<ContactMessage[]>) => {
+    setMessages((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_messages", JSON.stringify(next));
+      saveToServer({ messages: next });
+      return next;
+    });
+  };
+
+  const updateBranding = (updater: React.SetStateAction<LogoBranding>) => {
+    setBranding((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_branding", JSON.stringify(next));
+      saveToServer({ branding: next });
+      return next;
+    });
+  };
+
+  const updateArticles = (updater: React.SetStateAction<AdminArticle[]>) => {
+    setArticles((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_articles", JSON.stringify(next));
+      saveToServer({ articles: next });
+      return next;
+    });
+  };
+
+  const updateVideos = (updater: React.SetStateAction<AdminVideo[]>) => {
+    setVideos((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_videos", JSON.stringify(next));
+      saveToServer({ videos: next });
+      return next;
+    });
+  };
+
+  const updateImages = (updater: React.SetStateAction<AdminImage[]>) => {
+    setImages((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_images", JSON.stringify(next));
+      saveToServer({ images: next });
+      return next;
+    });
+  };
+
+  const updateSeoSettings = (updater: React.SetStateAction<SEOSettings>) => {
+    setSeoSettings((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_seo", JSON.stringify(next));
+      saveToServer({ seoSettings: next });
+      return next;
+    });
+  };
+
+  const updateAnalytics = (updater: React.SetStateAction<AnalyticsMetric>) => {
+    setAnalytics((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_analytics", JSON.stringify(next));
+      saveToServer({ analytics: next });
+      return next;
+    });
+  };
 
   const [readingArticle, setReadingArticle] = useState<AdminArticle | null>(null);
 
@@ -475,9 +631,8 @@ export default function App() {
             isRead: false
           };
           
-          setMessages(prev => {
+          updateMessages(prev => {
             const updated = [newMsg, ...prev];
-            localStorage.setItem("gmuhammadali_messages", JSON.stringify(updated));
             return updated;
           });
         }
@@ -1371,25 +1526,25 @@ export default function App() {
             isOpen={isAdminOpen}
             onClose={() => setIsAdminOpen(false)}
             projects={projects}
-            setProjects={setProjects}
+            setProjects={updateProjects}
             skillCategories={skillCategories}
-            setSkillCategories={setSkillCategories}
+            setSkillCategories={updateSkillCategories}
             experiences={experiences}
-            setExperiences={setExperiences}
+            setExperiences={updateExperiences}
             messages={messages}
-            setMessages={setMessages}
+            setMessages={updateMessages}
             branding={branding}
-            setBranding={setBranding}
+            setBranding={updateBranding}
             articles={articles}
-            setArticles={setArticles}
+            setArticles={updateArticles}
             videos={videos}
-            setVideos={setVideos}
+            setVideos={updateVideos}
             images={images}
-            setImages={setImages}
+            setImages={updateImages}
             seoSettings={seoSettings}
-            setSeoSettings={setSeoSettings}
+            setSeoSettings={updateSeoSettings}
             analytics={analytics}
-            setAnalytics={setAnalytics}
+            setAnalytics={updateAnalytics}
           />
         )}
       </AnimatePresence>
