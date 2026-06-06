@@ -11,7 +11,7 @@ import {
   Sparkles, Shield, TrendingUp, Terminal, Code2, Phone, Mail, Calendar, 
   ArrowUpRight, Instagram, Send, Cpu, Check, Menu, X, Users, Globe, 
   ChevronRight, ArrowRight, ShieldCheck, MessageSquare, Zap, Palette, ExternalLink,
-  Video, BookOpen
+  Video, BookOpen, Home, Briefcase, Sun, Moon
 } from "lucide-react";
 
 import CyberThreatMap from "./components/CyberThreatMap";
@@ -19,6 +19,8 @@ import ToolsSandbox from "./components/ToolsSandbox";
 import AIAssistant from "./components/AIAssistant";
 import AdminPanel from "./components/AdminPanel";
 import { SkillCategory, Project, Experience, ContactMessage, LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric } from "./types";
+// @ts-ignore
+import glassmorphismMenuImg from "./assets/images/glassmorphism_menu_1780781413319.png";
 
 // Dynamic Skill list with details
 const SKILL_CATEGORIES: SkillCategory[] = [
@@ -147,6 +149,17 @@ const NOTABLE_PROJECTS: Project[] = [
     performanceMetric: "SEO Score 95%+",
     tech: ["Gemini 3.5 Flash", "Express Backend", "SEO Crawler", "D3.js Charts"],
     category: "marketing"
+  },
+  {
+    id: "proj4",
+    title: "3D Glassmorphic UI Menu",
+    tagline: "3D shaffof dizayn va UI/UX konsepti",
+    description: "Markaziy oyna effekti bilan yaratilgan shaffof datchik pufakchasi, uning ichida analitika belgisi va ko'pikli ko'k paneli. Soft shadows, zamonaviy minimal uslub, yorug'lik effektlari va nozik to'rli fon.",
+    usersCount: "High Fidelity render",
+    performanceMetric: "UX Concept Pro",
+    tech: ["Glassmorphism", "Vite", "Tailwind CSS", "Figma 3D"],
+    category: "web",
+    imageUrl: glassmorphismMenuImg
   }
 ];
 
@@ -306,6 +319,23 @@ export default function App() {
     return localStorage.getItem("gmuhammadali_active_theme") || "cyan";
   });
 
+  // Light vs Dark Glassmorphism Mode State
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    const saved = localStorage.getItem("gmuhammadali_dark_mode");
+    return saved !== "false"; // Default to dark mode (true) to match original dark tech-forward layout
+  });
+
+  // Update HTML element to toggle classes dynamically
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (isDark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("gmuhammadali_dark_mode", isDark ? "true" : "false");
+  }, [isDark]);
+
   // Modals for Media, Articles, Images (requested "boshqa oynada ochilsin")
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isArticlesModalOpen, setIsArticlesModalOpen] = useState(false);
@@ -386,8 +416,19 @@ export default function App() {
           localStorage.setItem("gmuhammadali_active_theme", firestoreData.activeTheme);
         }
         if (firestoreData.projects) {
-          setProjects(firestoreData.projects);
-          localStorage.setItem("gmuhammadali_projects", JSON.stringify(firestoreData.projects));
+          const loadedProjects = [...firestoreData.projects];
+          const hasProj4 = loadedProjects.some(p => p.id === "proj4");
+          if (!hasProj4) {
+            loadedProjects.push(NOTABLE_PROJECTS[3]);
+            try {
+              const portfolioDocRef = doc(db, "state", "portfolio");
+              setDoc(portfolioDocRef, { projects: loadedProjects }, { merge: true });
+            } catch (err) {
+              console.error("Failed to migrate projects list: ", err);
+            }
+          }
+          setProjects(loadedProjects);
+          localStorage.setItem("gmuhammadali_projects", JSON.stringify(loadedProjects));
         }
         if (firestoreData.skillCategories) {
           setSkillCategories(firestoreData.skillCategories);
@@ -763,6 +804,19 @@ export default function App() {
           </div>
 
           <div className="hidden md:flex items-center space-x-3">
+            {/* Elegant 3D Glass Light/Dark Mode Switch */}
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="p-1.5 rounded-full border border-slate-800 bg-slate-950/80 hover:bg-slate-900/90 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center justify-center shadow-lg mr-1"
+              title={isDark ? "Kunduzgi rejim (Light Mode)" : "Tungi rejim (Dark Mode)"}
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4 text-amber-500 animate-pulse" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-400" />
+              )}
+            </button>
+
             {/* Brand Theme Selector circles */}
             <div className="flex items-center space-x-1.5 border border-slate-900 bg-slate-950/80 p-1.5 rounded-full mr-2">
               <button
@@ -887,6 +941,25 @@ export default function App() {
                       className={`w-4 h-4 rounded-full bg-[linear-gradient(to_bottom_right,#DBD5C9,#CBE8B8)] active:scale-90 transition ${activeTheme === "amber" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-50"}`}
                     />
                   </div>
+                </div>
+
+                {/* Mobile Light / Dark mode toggle row */}
+                <div className="py-2 border-b border-slate-900 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-500 font-mono">TUNGI / KUNDUZGI REJIM:</span>
+                  <button
+                    onClick={() => setIsDark(!isDark)}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/80 text-[10px] text-slate-300 font-bold hover:text-white transition duration-200"
+                  >
+                    {isDark ? (
+                      <>
+                        <Moon className="w-3.5 h-3.5 text-sky-400" /> TUNGI (DARK)
+                      </>
+                    ) : (
+                      <>
+                        <Sun className="w-3.5 h-3.5 text-amber-400 animate-pulse" /> KUNDUZGI (LIGHT)
+                      </>
+                    )}
+                  </button>
                 </div>
 
                 <button
@@ -1123,19 +1196,32 @@ export default function App() {
             </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((proj) => (
               <div
                 key={proj.id}
-                className="bg-slate-950/80 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition duration-300 flex flex-col justify-between group shadow-lg"
+                className="bg-slate-950/80 border border-slate-900 rounded-2xl p-6 hover:border-slate-800 transition duration-300 flex flex-col justify-between group shadow-xl"
               >
                 <div className="space-y-4">
+                  {/* Project Image if available */}
+                  {proj.imageUrl && (
+                    <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-slate-900 bg-slate-950 shadow-md">
+                      <img
+                        src={proj.imageUrl}
+                        alt={proj.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                  )}
+
                   {/* Category icon badges */}
                   <div className="flex justify-between items-center">
                     <div className="px-2 py-0.5 rounded text-[9px] font-mono uppercase bg-slate-900 text-slate-400 border border-slate-850">
                       {proj.category === "ai" && "🧠 AI Engine"}
                       {proj.category === "cyber" && "🔐 Cyber Sec"}
                       {proj.category === "marketing" && "📊 Marketing"}
+                      {proj.category === "web" && "🎨 UI/UX Design"}
                     </div>
 
                     <span className="text-[10px] font-mono text-cyan-400 font-semibold">
@@ -1402,7 +1488,7 @@ export default function App() {
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
                     placeholder="Masalan: Asliddin"
-                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-700 focus:outline-none focus:border-cyan-500 transition"
+                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition animate-fade-in"
                   />
                 </div>
 
@@ -1414,7 +1500,7 @@ export default function App() {
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
                     placeholder="Masalan: @asliddin_dev yoki abc@mail.com"
-                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-700 focus:outline-none focus:border-cyan-500 transition"
+                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition animate-fade-in"
                   />
                 </div>
 
@@ -1426,7 +1512,7 @@ export default function App() {
                     value={contactMessage}
                     onChange={(e) => setContactMessage(e.target.value)}
                     placeholder="Loyihangiz bo'yicha qisqacha tavsiflarni yozing..."
-                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-700 focus:outline-none focus:border-cyan-500 transition"
+                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition animate-fade-in"
                   />
                 </div>
 
@@ -1967,6 +2053,52 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* 👑 DYNAMIC 3D GLASSMORPHIC BUBBLE MENU (Match uploaded design) */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm sm:max-w-md px-4 pointer-events-none">
+        <div className="relative bg-gradient-to-r from-[#1E5CE3] to-[#2563EB]/95 backdrop-blur-xl border border-white/20 rounded-full py-2 px-3 sm:px-5 flex items-center justify-between gap-1 shadow-[0_16px_36px_rgba(26,92,229,0.35),inset_0_2px_4px_rgba(255,255,255,0.25)] pointer-events-auto">
+          {[
+            { id: "home", label: "Asosiy", icon: Home },
+            { id: "skills", label: "Skills", icon: Cpu },
+            { id: "threatmap", label: "Kiber", icon: Shield },
+            { id: "sandbox", label: "Sandbox", icon: Terminal },
+            { id: "projects", label: "Loyihalar", icon: Briefcase },
+            { id: "contact", label: "Aloqa", icon: MessageSquare }
+          ].map((item) => {
+            const IconComponent = item.icon;
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className="relative flex flex-col items-center justify-center w-11 h-11 rounded-full transition-all duration-300 group"
+                title={item.label}
+              >
+                {isActive ? (
+                  /* Stunning 3D-feeling glassy bubble/sphere with white edge highlights */
+                  <motion.div
+                    layoutId="activeBubbleMenuCircle"
+                    className="absolute -top-7 w-12 h-12 rounded-full bg-white/25 backdrop-blur-lg border border-white/50 shadow-[inset_0_4px_10px_rgba(255,255,255,0.45),0_10px_20px_rgba(26,92,229,0.3)] flex items-center justify-center"
+                    transition={{ type: "spring", stiffness: 380, damping: 24 }}
+                  >
+                    <IconComponent className="w-5 h-5 text-white" />
+                    {/* Glowing highlight lens */}
+                    <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
+                  </motion.div>
+                ) : (
+                  <IconComponent className="w-5 h-5 text-blue-100 group-hover:text-white transition-all group-hover:scale-115" />
+                )}
+                
+                {/* Micro menu text labels */}
+                <span className={`text-[8px] font-mono mt-1 font-semibold leading-none ${isActive ? "opacity-0 mt-6" : "text-blue-200 group-hover:text-white"} transition-all duration-300`}>
+                  {item.label}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
 
     </div>
   );

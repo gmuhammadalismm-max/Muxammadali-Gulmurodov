@@ -27,6 +27,7 @@ export interface Project {
   performanceMetric?: string;
   tech: string[];
   link?: string;
+  imageUrl?: string;
   category: "ai" | "marketing" | "cyber" | "web";
 }
 
