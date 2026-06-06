@@ -166,8 +166,27 @@ app.post("/api/chat", async (req, res) => {
     const answer = response.text || "Kechirasiz, xatolik yuz berdi.";
     res.json({ text: answer });
   } catch (err: any) {
-    console.error("Gemini API Error in chat:", err);
-    res.status(500).json({ error: "Server AI bilan bog'lana olmadi.", details: err.message });
+    console.error("Gemini API Error in chat, falling back to offline assistant:", err);
+    // Return high quality fallback response directly
+    let fallbackText = "";
+
+    if (msgLower.includes("salom") || msgLower.includes("hello") || msgLower.includes("hi") || msgLower.includes("assalom") || msgLower.includes("privet")) {
+      fallbackText = "Vaalaykum assalom! 🌐 Muxammadali Gulmurodovning portfoliodagi sun'iy intellekt bo'yicha yordamchisiman.\n\nMenga quyidagi savollarni berishingiz mumkin:\n- **Loyihalari** haqida ma'lumot berish\n- **Marketing** xizmatlarini tushuntirish\n- **Kiberxavfsizlik (Cybersecurity)** maslahatlarini olish\n- **Muxammadali bilan aloqa** o'rnatish\n\nSizga qaysi yo'nalish bo'yicha yordam bera olaman?";
+    } else if (msgLower.includes("loyiha") || msgLower.includes("project") || msgLower.includes("yutuq") || msgLower.includes("portf") || msgLower.includes("ish")) {
+      fallbackText = "Muxammadali tomonidan ishlab chiqilgan ajoyib loyihalar ro'yxati:\n\n1. **🧠 AI Marketing Assistant**: Bizneslar uchun sotuvchi kreativ matnlar, ijtimoiy tarmoq postlari va reklama g'oyalarini bir zumda yozadigan aqlli modul. Hozirda 1,000 dan ortiq faol foydalanuvchiga ega.\n2. **🔐 PhishDetector AI**: Sayt manzili (URL) va WHOIS ma'lumotlarini o'spirib, soxta klik hamda payme to'lov sahifalarini sekundiga 0.2s ichida aniqlovchi xavfsizlik datchigi.\n3. **📈 SEO Analyzer Pro**: Saytlarni qidiruv datchiklariga moslashuvi, tezligi hamda marketing ko'rsatkichlarini chuqur tekshirib sotuvchi hooks beruvchi to'plam.\n\nQaysi biri haqida kengroq gapirib beray?";
+    } else if (msgLower.includes("kiber") || msgLower.includes("cyber") || msgLower.includes("xavfsizlik") || msgLower.includes("pentest") || msgLower.includes("hujum")) {
+      fallbackText = "🔐 **Kiberxavfsizlik yo'nalishi bo'yicha professional xizmatlar:**\n\nMuxammadali tizimlar, veb-saytlar hamda serverlar xavfsizligini ta'minlashda quyidagi sinovlarni taklif etadi:\n- **Penetrasion test (Kirib borish testi)**: Saytingiz datchiklari va formalarini xakerlar hujumidan oldin buzib ko'rib, zaifliklarni bartaraf etish.\n- **Heuristic Phishing Detection**: Bank yoki to'lov soxta tizimlarini o'rnatilgan algoritm orqali fosh qilish.\n- **Tarmoq monitoringi va SQLi prevention**.\n\nAgar xavfsizlik auditi kerak bo'lsa, pastdagi shifrlangan formani to'ldirishingiz mumkin!";
+    } else if (msgLower.includes("marketing") || msgLower.includes("reklama") || msgLower.includes("seo") || msgLower.includes("smm") || msgLower.includes("target")) {
+      fallbackText = "📈 **Raqamli Marketing va SMM xizmatlari:**\n\nMuxammadli raqamli marketingda aqlli sun'yi intellekt modellarini qo'llagan holda quyidagi natijalarni kafolatlaydi:\n- **Organik SEO (Google'da 1-o'rin)**: To'g'ri kalit so'zlar loyihasi orqali saytingizga kelayotgan bepul xaridorlar oqimini 2.5 barobargacha o'stirish.\n- **Sotuvchi SMM ssenariylari**: Ijtimoiy tarmoqlar (Instagram reels, TikTok) uchun g'aroyib va yoshbop reklama hooks (ko'priklar) tayyorlash.\n- **ROAS o'sishi**: Reklamaga tikilgan pulni 3 barobar yaxshiroq marketing ko'rsatkichi bilan aylantirish.\n\nSaytingizni sinab ko'rish uchun **SEO Analyzer Pro** tabidan foydalaning!";
+    } else if (msgLower.includes("aloqa") || msgLower.includes("kontakt") || msgLower.includes("telefon") || msgLower.includes("bog'lan") || msgLower.includes("telfon") || msgLower.includes("telegram") || msgLower.includes("contact")) {
+      fallbackText = "Muxammadali bilan to'g'ridan-to'g'ri aloqa kanallari:\n\n- ✈️ **Telegram**: [@muxammadali_x7](https://t.me/muxammadali_x7)\n- 📸 **Instagram**: [@themuxammad23](https://instagram.com/themuxammad23)\n- 📞 **Telefon**: +998 33 293 04 07\n- ✉️ **Email**: [muxammadali@ai.uz](mailto:muxammadali@ai.uz)\n\nSiz ham o'z saytingiz yoki biznesingizga sun'iy intellekt botlarini ulash hamda xavfsizlik choralarini ko'rish bo'yicha maslahatlar olishingiz mumkin. Muxammadali bilan hamkorlik qilishga shoshiling!";
+    } else if (msgLower.includes("kim") || msgLower.includes("shaxs") || msgLower.includes("manba") || msgLower.includes("muxammadali") || msgLower.includes("expert")) {
+      fallbackText = "Muxammadali Gulmurodov — o'ta tajribali ko'p qirrali mutaxassis:\n\n- 🤖 **AI Developer**: Prompt Engineering, aqlli bot avtomatizatsiyalari va tizimli yo'riqnomalar ustasi.\n- 📊 **Marketing Leader**: Bizneslarni tezkor Google qidiruvigacha olib chiquvchi va SMM konversiyasini oshiruvchi lizer.\n- 🔐 **Ethical Cybersecurity Expert**: Ijtimoiy muhandislik fishing zararli tarmoqlarini ochish va himoya tizimlarini loyihalashtirish xizmatlari.\n\nUning ishlashini pastdagi **Kiber Threat Map** va **Mini Sandbox** orqali interaktiv tarzda sinashingiz mumkin!";
+    } else {
+      fallbackText = "Muxammadalining portfolioga doir barcha savollargacha yordam bera olaman. 🚀\n\nIltimos, quyidagi mavzulardan birini tanlang yoki yozing:\n- **Loyihalar** (AI Marketing, PhishDetector, SEO Analyzer)\n- **Kiberxavfsizlik xizmati**\n- **Targeting / SEO audit**\n- **Muxammadali bilan aloqa bog'lash**\n\nMenga o'z savolingizni yozib qoldiring!";
+    }
+
+    res.json({ text: fallbackText });
   }
 });
 

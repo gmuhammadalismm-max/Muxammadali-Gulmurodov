@@ -843,7 +843,35 @@ export default function AdminPanel({
                                   const reader = new FileReader();
                                   reader.onload = (event) => {
                                     if (event.target?.result) {
-                                      setBrandForm({ ...brandForm, avatarUrl: event.target.result as string });
+                                      const img = new Image();
+                                      img.src = event.target.result as string;
+                                      img.onload = () => {
+                                        const canvas = document.createElement("canvas");
+                                        const maxDim = 256;
+                                        let width = img.width;
+                                        let height = img.height;
+                                        if (width > height) {
+                                          if (width > maxDim) {
+                                            height = Math.round((height * maxDim) / width);
+                                            width = maxDim;
+                                          }
+                                        } else {
+                                          if (height > maxDim) {
+                                            width = Math.round((width * maxDim) / height);
+                                            height = maxDim;
+                                          }
+                                        }
+                                        canvas.width = width;
+                                        canvas.height = height;
+                                        const ctx = canvas.getContext("2d");
+                                        if (ctx) {
+                                          ctx.drawImage(img, 0, 0, width, height);
+                                          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+                                          setBrandForm({ ...brandForm, avatarUrl: compressedBase64 });
+                                        } else {
+                                          setBrandForm({ ...brandForm, avatarUrl: event.target.result as string });
+                                        }
+                                      };
                                     }
                                   };
                                   reader.readAsDataURL(file);

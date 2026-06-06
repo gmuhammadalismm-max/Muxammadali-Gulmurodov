@@ -15,6 +15,41 @@ const SUGGESTED_CHIPS = [
   { text: "📞 Bog'lanish kanallari", prompt: "Muxammadali bilan qanday aloqaga chiqish va ish bo'yicha maslahatlashish mumkin?" },
 ];
 
+function getLocalFallbackResponse(message: string): string {
+  const msgLower = message.toLowerCase().trim();
+  
+  if (msgLower.includes("salom") || msgLower.includes("hello") || msgLower.includes("hi") || msgLower.includes("assalom") || msgLower.includes("privet")) {
+    return "Assalomu alaykum! 🌐 Muxammadali Gulmurodovning portfoliodagi sun'iy intellekt bo'yicha shaxsiy yordamchisiman.\n\nMenga quyidagi savollarni berishingiz mumkin:\n- **Loyihalari** haqida batafsil ma'lumot olish\n- **Marketing & SMM** xizmatlarini o'rganish\n- **Kiberxavfsizlik (Cybersecurity)** maslahatlarini olish\n- **Muxammadali bilan to'g'ridan-to'g'ri bog'lanish**\n\nSizga qaysi soha bo'yicha yordam bera olaman?";
+  } 
+  
+  if (msgLower.includes("loyiha") || msgLower.includes("project") || msgLower.includes("ish") || msgLower.includes("yutuq") || msgLower.includes("portf")) {
+    return "Muxammadali tomonidan ishlab chiqilgan ajoyib loyihalar ro'yxati:\n\n1. **🧠 AI Marketing Assistant**: Bizneslar uchun sotuvchi kreativ matnlar, ijtimoiy tarmoq postlari va reklama g'oyalarini bir zumda yozadigan aqlli modul. Hozirda 1,000 dan ortiq faol foydalanuvchiga ega.\n2. **🔐 PhishDetector AI**: Sayt manzili (URL) va WHOIS ma'lumotlarini o'spirib, soxta klik hamda payme to'lov sahifalarini sekundiga 0.2s ichida aniqlovchi xavfsizlik datchigi.\n3. **📈 SEO Analyzer Pro**: Saytlarni qidiruv datchiklariga moslashuvi, tezligi hamda marketing ko'rsatkichlarini chuqur tekshirib sotuvchi hooks beruvchi to'plam.\n\nQaysi biri haqida kengroq gapirib beray?";
+  } 
+  
+  if (msgLower.includes("kiber") || msgLower.includes("cyber") || msgLower.includes("xavfsizlik") || msgLower.includes("pentest") || msgLower.includes("hujum") || msgLower.includes("security") || msgLower.includes("xaker")) {
+    return "🔐 **Kiberxavfsizlik yo'nalishi bo'yicha professional xizmatlar:**\n\nMuxammadali tizimlar, veb-saytlar va serverlar xavfsizligini ta'minlashda quyidagi sinovlarni taqdim etadi:\n- **Penetrasion test (Kirib borish testi)**: Saytingiz datchiklari va formalarini xakerlar hujumidan oldin buzib ko'rib, zaifliklarni bartaraf etish.\n- **Heuristic Phishing Detection**: Bank yoki to'lov soxta tizimlarini o'rnatilgan algoritm orqali fosh qilish.\n- **Tarmoq monitoringi va SQLi prevention**.\n\nAgar xavfsizlik va kirish testlari kerak bo'lsa, saytdagi **Cyber Threat Map** yoki pastdagi aloqa kanallari orqali bizga xabar berishingiz mumkin.";
+  } 
+  
+  if (msgLower.includes("marketing") || msgLower.includes("reklama") || msgLower.includes("seo") || msgLower.includes("smm") || msgLower.includes("target")) {
+    return "📈 **Raqamli Marketing va SMM xizmatlari:**\n\nMuxammadali raqamli marketingda aqlli sun'iy intellekt modellarini qo'llagan holda quyidagi natijalarni kafolatlaydi:\n- **Organik SEO (Google qidiruvida 1-o'rin)**: To'g'ri kalit so'zlar loyihasi orqali saytingizga kelayotgan bepul xaridorlar oqimini 2.5 barobargacha o'stirish.\n- **Sotuvchi SMM ssenariylari**: Ijtimoiy tarmoqlar (Instagram reels, TikTok) uchun g'aroyib va yoshbop reklama ko'priklar (hooks) tayyorlash.\n- **ROAS o'sishi**: Reklamaga tikilgan pulni 3 barobar yaxshiroq marketing ko'rsatkichi bilan qaytarish.\n\nSaytingizni sinab ko'rish uchun yuqoridagi **SEO Analyzer** sahifasidan foydalanib ko'ring!";
+  } 
+  
+  if (msgLower.includes("aloqa") || msgLower.includes("kontakt") || msgLower.includes("telefon") || msgLower.includes("bog'lan") || msgLower.includes("telfon") || msgLower.includes("telegram") || msgLower.includes("contact")) {
+    return "Muxammadali bilan bog'lanish uchun quyidagi to'g'ridan-to'g'ri aloqa kanallari ochiq:\n\n- ✈️ **Telegram**: [@muxammadali_x7](https://t.me/muxammadali_x7)\n- 📸 **Instagram**: [@themuxammad23](https://instagram.com/themuxammad23)\n- 📞 **Telefon**: +998 33 293 04 07\n- ✉️ **Email**: [muxammadali@ai.uz](mailto:muxammadali@ai.uz)\n\nLoyiha buyurtmalari, hamkorlik takliflari va boshqa savollar bo'yicha istalgan vaqtda yozishingiz mumkin.";
+  } 
+  
+  if (msgLower.includes("kim") || msgLower.includes("shaxs") || msgLower.includes("manba") || msgLower.includes("muxammadali") || msgLower.includes("expert")) {
+    return "Muxammadali Gulmurodov — o'ta tajribali ko'p qirrali mutaxassis:\n\n- 🤖 **AI Developer**: Prompt Engineering, aqlli bot avtomatizatsiyalari va tizimli yo'riqnomalar ustasi.\n- 📊 **Marketing Leader**: Bizneslarni tezkor Google qidiruvigacha olib chiquvchi va SMM konversiyasini oshiruvchi lider.\n- 🔐 **Ethical Cybersecurity Expert**: Ijtimoiy muhandislik fishing zararkunandalarini ochish va himoya tizimlarini loyihalashtirish xizmatlari.\n\nUning ishlashini portfoliodagi **Cyber Threat Map** va **Mini-Sandbox** interaktiv vositalari orqali bevosita sinashingiz mumkin!";
+  }
+
+  // Support Russian queries as well
+  if (msgLower.includes("привет") || msgLower.includes("здравствуй") || msgLower.includes("работы") || msgLower.includes("контакт") || msgLower.includes("связь")) {
+    return "Здравствуйте! Я искусственный интеллект-помощник Мухаммадали Гульмуродова.\n\nЯ могу рассказать вам о:\n- Её **проектах** (AI Marketing, PhishDetector, SEO Analyzer)\n- Услугах по **кибербезопасности** (Пентест, аудит)\n- Услугах по **маркетингу** (SEO, SMM, продвижение)\n- Способах **связаться** с Мухаммадали.\n\nКак я могу вам помочь?";
+  }
+
+  return "Muxammadalining portfolioga doir barcha savollarga javob bera olaman. 🚀\n\nIltimos, quyidagi mavzulardan birini tanlang yoki yozing:\n- **Loyihalar** (AI Marketing Assistant, PhishDetector AI va SEO Analyzer Pro)\n- **Kiberxavfsizlik xizmati (Pentest, xavfsizlik auditi)**\n- **Targeting / SEO audit**\n- **Muxammadali bilan aloqa bog'lash**\n\nMenga o'z savol yoki taklifingizni yozib qoldiring!";
+}
+
 export default function AIAssistant() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -84,8 +119,17 @@ export default function AIAssistant() {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err: any) {
-      console.error("Failed to connect to assistant backend:", err);
-      setErrorText("Afsuski, internet yoki serverga ulanish xatoligi yuz berdi. Iltimos qaytadan urinib ko'ring.");
+      console.error("Failed to connect to assistant backend, using local smart assistant:", err);
+      // Generate immediate smart rule-based answer in Uzbek instead of showing a red error box
+      const fallbackResponse = getLocalFallbackResponse(textToSend);
+      
+      const assistantMessage: ChatMessage = {
+        id: Math.random().toString(),
+        role: "model",
+        text: fallbackResponse,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
     } finally {
       setLoading(false);
     }
