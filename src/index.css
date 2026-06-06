@@ -4,6 +4,60 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  /* Slate Theme Override (Transforms whole dark theme background, cards & borders) */
+  --color-slate-950: #101718; /* Deep rich Olivine-Dark Slate background */
+  --color-slate-900: #152021; /* Olivine core card/section background */
+  --color-slate-850: #1e2b2c; /* Medium-dark border line */
+  --color-slate-800: #2b3d3e; /* High contrast border line */
+  --color-slate-700: #49596B; /* Muted slate-green elements */
+  --color-slate-600: #576d78; /* Slightly lighter slate-green */
+  --color-slate-500: #7b8f99; /* Muted gray-green */
+  --color-slate-400: #9cb0b8; /* Semi-readable block summary text */
+  --color-slate-300: #DBD5C9; /* Warm Sand primary body text */
+  --color-slate-200: #e5e1d7; /* Soft light background accent */
+  --color-slate-100: #f1ede4; /* High-contrast white sand text */
+
+  /* Cyan Accent Overrides (Transforms all main cyan glowing accents and buttons) */
+  --color-cyan-950: #101718;
+  --color-cyan-900: #152021;
+  --color-cyan-850: #1c282a;
+  --color-cyan-800: #233436;
+  --color-cyan-700: #2a3d3f;
+  --color-cyan-600: #49596B;
+  --color-cyan-500: #DBD5C9; /* Warm Sand button accent */
+  --color-cyan-400: #CBE8B8; /* Nyanza Sage core glow and brand highlights */
+  --color-cyan-300: #d5ecc7;
+  --color-cyan-200: #e0f1d5;
+  --color-cyan-100: #eff7eb;
+  --color-cyan-50:  #f6faf3;
+
+  /* Emerald Accent Overrides (Aligns secondary highlights with new brand identity) */
+  --color-emerald-950: #101718;
+  --color-emerald-900: #152021;
+  --color-emerald-800: #1e2b2c;
+  --color-emerald-700: #2a3d3f;
+  --color-emerald-600: #49596B;
+  --color-emerald-500: #DBD5C9;
+  --color-emerald-400: #CBE8B8;
+  --color-emerald-300: #d5ecc7;
+
+  /* Blue Accent Overrides (Transforms gradients and links seamlessly) */
+  --color-blue-950: #101718;
+  --color-blue-900: #152021;
+  --color-blue-800: #1e2b2c;
+  --color-blue-700: #2a3d3f;
+  --color-blue-600: #49596B;
+  --color-blue-500: #DBD5C9;
+  --color-blue-400: #CBE8B8;
+  --color-blue-300: #d5ecc7;
+
+  /* Raw palette variables kept for active custom components */
+  --color-nyanza: #CBE8B8;
+  --color-olivine-light: #DBD5C9;
+  --color-slate-green: #49596B;
+  --color-olivine-dark: #101718;
+  --color-olivine-card: #152021;
 }
 
 html {
@@ -12,8 +66,8 @@ html {
 }
 
 body {
-  background-color: #020617;
-  color: #f8fafc;
+  background-color: #101718; /* Deep rich Olivine-Dark Slate */
+  color: #DBD5C9; /* Warm Sand White text for luxurious aesthetic */
   overflow-x: hidden;
 }
 
@@ -22,13 +76,13 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: #101718;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #1e2b2c;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #2b3d3e;
 }
 

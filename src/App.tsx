@@ -4,6 +4,8 @@
  */
 
 import { useState, useEffect } from "react";
+import { db, handleFirestoreError, OperationType } from "./firebase";
+import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Sparkles, Shield, TrendingUp, Terminal, Code2, Phone, Mail, Calendar, 
@@ -24,7 +26,7 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     id: "ai",
     title: "AI & Prompt Muhandisi",
     icon: "Sparkles",
-    color: "from-cyan-500 to-blue-500",
+    color: "from-nyanza to-slate-green",
     description: "LLM optimizatsiyasi, maxsus GPT bollar, agentlar koordinatsiyasi va jarayonlarni 100% avtomatlashtirish yechimlari.",
     skills: [
       { name: "Prompt Engineering (GPT, Gemini)", level: 98, info: "Professional kontekst-prompting va logik zanjirlar" },
@@ -37,20 +39,20 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     id: "cyber",
     title: "Kiberxavfsizlik Eksperti",
     icon: "Shield",
-    color: "from-rose-500 to-red-600",
+    color: "from-slate-green to-olivine-light",
     description: "Tizimlarning zaifliklarini tekshirish, kirib borish (Pentest) testlari va fishing hujumlarini tahlil qilish.",
     skills: [
       { name: "Penetrasion testing (Kirib borish testi)", level: 88, info: "Veb va server zaifliklarini audit qilish" },
       { name: "Heuristic Phishing Analysis", level: 95, info: "Soxta tarmoqlar va zararli havolalarni audit qilish" },
       { name: "Network Audits & Wireshark", level: 85, info: "Tarmoq paketlari monitoringi va anomaliyalarni topish" },
-      { name: "Security Architecture", level: 90, info: "Xavfsizlik tizimi va kiber-firewallarni loyihalash" }
+      { name: "Security Architecture", level: 90, info: "Xavfsizlik tizimi va kiber-firewallarni loyihash" }
     ]
   },
   {
     id: "marketing",
     title: "Raqamli Marketing",
     icon: "TrendingUp",
-    color: "from-emerald-400 to-teal-500",
+    color: "from-olivine-light to-nyanza",
     description: "Maqsadli SMM kampaniyalari, organik SEO strategiyalari, konversiyani oshirish va brend xabardorligi.",
     skills: [
       { name: "SEO (Qidiruv tizimi optimizatsiyasi)", level: 92, info: "Google hamda qidiruv tizimlarida bepul 1-o'rinlarga chiqish" },
@@ -63,7 +65,7 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     id: "web",
     title: "Web Interfeys Dasturchisi",
     icon: "Code2",
-    color: "from-purple-500 to-indigo-500",
+    color: "from-nyanza to-olivine-light",
     description: "Tezkor, zamonaviy va reaktiv web boshqaruv panellari va landing page interfeyslarni qurish.",
     skills: [
       { name: "React, Vite, TypeScript", level: 85, info: "Zamonaviy reaktiv va interaktiv dasturlar tuzish" },
@@ -152,7 +154,7 @@ const DEFAULT_BRANDING: LogoBranding = {
   initials: "M",
   name: "Muxammadali",
   subtitle: "AI & CYBER EXPERT",
-  accentColor: "from-cyan-500 to-emerald-400",
+  accentColor: "from-nyanza to-olivine-light",
   avatarUrl: ""
 };
 
@@ -223,77 +225,77 @@ const DEFAULT_ANALYTICS: AnalyticsMetric = {
 
 export const getThemeColors = (themeName: "cyan" | "emerald" | "rose" | "amber") => {
   switch (themeName) {
-    case "emerald":
+    case "emerald": // Elegant Olivine Warm Sand style
       return {
-        primary: "emerald-400",
-        primaryRaw: "#34d399",
-        text: "text-emerald-400",
-        bg: "bg-emerald-500",
-        border: "border-emerald-500",
-        borderLight: "border-emerald-900/30",
-        borderStrong: "border-emerald-800",
-        hoverBg: "hover:bg-emerald-400 hover:text-slate-950",
-        hoverBgButton: "hover:bg-emerald-500",
-        hoverText: "hover:text-emerald-400",
-        gradient: "from-emerald-500 to-teal-500",
-        gradientText: "from-emerald-400 to-teal-400",
-        glow: "shadow-emerald-500/20",
-        accentColorName: "emerald",
-        accentColorClass: "from-emerald-500 to-teal-500"
+        primary: "olivine-light",
+        primaryRaw: "#DBD5C9",
+        text: "text-olivine-light",
+        bg: "bg-olivine-light",
+        border: "border-olivine-light",
+        borderLight: "border-slate-green/20",
+        borderStrong: "border-slate-green/50",
+        hoverBg: "hover:bg-olivine-light hover:text-olivine-dark",
+        hoverBgButton: "hover:bg-olivine-light/95",
+        hoverText: "hover:text-olivine-light",
+        gradient: "from-olivine-light to-slate-green",
+        gradientText: "from-olivine-light to-nyanza",
+        glow: "shadow-olivine-light/10",
+        accentColorName: "olivine-light",
+        accentColorClass: "from-olivine-light to-slate-green"
       };
-    case "rose":
+    case "rose": // Slate Forest Green style
       return {
-        primary: "rose-400",
-        primaryRaw: "#f43f5e",
-        text: "text-rose-400",
-        bg: "bg-rose-500",
-        border: "border-rose-500",
-        borderLight: "border-rose-900/30",
-        borderStrong: "border-rose-800",
-        hoverBg: "hover:bg-rose-400 hover:text-slate-950",
-        hoverBgButton: "hover:bg-rose-500",
-        hoverText: "hover:text-rose-400",
-        gradient: "from-rose-500 to-violet-600",
-        gradientText: "from-rose-400 to-violet-400",
-        glow: "shadow-rose-500/20",
-        accentColorName: "rose",
-        accentColorClass: "from-rose-500 to-violet-600"
+        primary: "slate-green",
+        primaryRaw: "#49596B",
+        text: "text-slate-green",
+        bg: "bg-slate-green",
+        border: "border-slate-green",
+        borderLight: "border-nyanza/20",
+        borderStrong: "border-nyanza/40",
+        hoverBg: "hover:bg-slate-green hover:text-olivine-dark",
+        hoverBgButton: "hover:bg-slate-green/95",
+        hoverText: "hover:text-slate-green",
+        gradient: "from-slate-green to-nyanza",
+        gradientText: "from-slate-green to-olivine-light",
+        glow: "shadow-slate-green/10",
+        accentColorName: "slate-green",
+        accentColorClass: "from-slate-green to-nyanza"
       };
-    case "amber":
+    case "amber": // Balanced Clay Sand style
       return {
-        primary: "amber-400",
-        primaryRaw: "#fbbf24",
-        text: "text-amber-400",
-        bg: "bg-amber-500",
-        border: "border-amber-500",
-        borderLight: "border-amber-900/30",
-        borderStrong: "border-amber-800",
-        hoverBg: "hover:bg-amber-400 hover:text-slate-950",
-        hoverBgButton: "hover:bg-amber-500",
-        hoverText: "hover:text-amber-400",
-        gradient: "from-orange-500 to-amber-400",
-        gradientText: "from-orange-400 to-amber-400",
-        glow: "shadow-amber-500/20",
-        accentColorName: "amber",
-        accentColorClass: "from-orange-500 to-amber-400"
+        primary: "olivine-light",
+        primaryRaw: "#DBD5C9",
+        text: "text-olivine-light",
+        bg: "bg-olivine-light",
+        border: "border-olivine-light",
+        borderLight: "border-slate-green/20",
+        borderStrong: "border-slate-green/50",
+        hoverBg: "hover:bg-olivine-light hover:text-olivine-dark",
+        hoverBgButton: "hover:bg-olivine-light/95",
+        hoverText: "hover:text-olivine-light",
+        gradient: "from-slate-green to-olivine-light",
+        gradientText: "from-nyanza to-olivine-light",
+        glow: "shadow-olivine-light/10",
+        accentColorName: "olivine-light",
+        accentColorClass: "from-slate-green to-olivine-light"
       };
-    default: // cyan
+    default: // cyan -> Nyanza Premium Sage style (Default)
       return {
-        primary: "cyan-400",
-        primaryRaw: "#22d3ee",
-        text: "text-cyan-400",
-        bg: "bg-cyan-500",
-        border: "border-cyan-500",
-        borderLight: "border-cyan-900/30",
-        borderStrong: "border-cyan-800",
-        hoverBg: "hover:bg-cyan-400 hover:text-slate-950",
-        hoverBgButton: "hover:bg-cyan-500",
-        hoverText: "hover:text-cyan-400",
-        gradient: "from-cyan-500 to-blue-500",
-        gradientText: "from-cyan-400 to-blue-400",
-        glow: "shadow-cyan-500/20",
-        accentColorName: "cyan",
-        accentColorClass: "from-cyan-500 to-blue-500"
+        primary: "nyanza",
+        primaryRaw: "#CBE8B8",
+        text: "text-nyanza",
+        bg: "bg-nyanza",
+        border: "border-nyanza",
+        borderLight: "border-slate-green/20",
+        borderStrong: "border-slate-green/50",
+        hoverBg: "hover:bg-nyanza hover:text-olivine-dark",
+        hoverBgButton: "hover:bg-nyanza/95",
+        hoverText: "hover:text-nyanza",
+        gradient: "from-nyanza to-slate-green",
+        gradientText: "from-nyanza to-olivine-light",
+        glow: "shadow-nyanza/10",
+        accentColorName: "nyanza",
+        accentColorClass: "from-nyanza to-slate-green"
       };
   }
 };
@@ -372,69 +374,100 @@ export default function App() {
     return saved ? JSON.parse(saved) : DEFAULT_ANALYTICS;
   });
 
-  // Load initial data from server DB on mount
+  // Real-time synchronization with Firebase Firestore
   useEffect(() => {
-    fetch("/api/db")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && data.success && data.db) {
-          const db = data.db;
-          if (db.activeTheme) {
-            setActiveTheme(db.activeTheme);
-            localStorage.setItem("gmuhammadali_active_theme", db.activeTheme);
-          }
-          if (db.projects) {
-            setProjects(db.projects);
-            localStorage.setItem("gmuhammadali_projects", JSON.stringify(db.projects));
-          }
-          if (db.skillCategories) {
-            setSkillCategories(db.skillCategories);
-            localStorage.setItem("gmuhammadali_skills", JSON.stringify(db.skillCategories));
-          }
-          if (db.experiences) {
-            setExperiences(db.experiences);
-            localStorage.setItem("gmuhammadali_experience", JSON.stringify(db.experiences));
-          }
-          if (db.messages) {
-            setMessages(db.messages);
-            localStorage.setItem("gmuhammadali_messages", JSON.stringify(db.messages));
-          }
-          if (db.branding) {
-            setBranding(db.branding);
-            localStorage.setItem("gmuhammadali_branding", JSON.stringify(db.branding));
-          }
-          if (db.articles) {
-            setArticles(db.articles);
-            localStorage.setItem("gmuhammadali_articles", JSON.stringify(db.articles));
-          }
-          if (db.videos) {
-            setVideos(db.videos);
-            localStorage.setItem("gmuhammadali_videos", JSON.stringify(db.videos));
-          }
-          if (db.images) {
-            setImages(db.images);
-            localStorage.setItem("gmuhammadali_images", JSON.stringify(db.images));
-          }
-          if (db.seoSettings) {
-            setSeoSettings(db.seoSettings);
-            localStorage.setItem("gmuhammadali_seo", JSON.stringify(db.seoSettings));
-          }
-          if (db.analytics) {
-            setAnalytics(db.analytics);
-            localStorage.setItem("gmuhammadali_analytics", JSON.stringify(db.analytics));
-          }
+    const portfolioDocRef = doc(db, "state", "portfolio");
+
+    const unsubscribe = onSnapshot(portfolioDocRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const firestoreData = snapshot.data();
+        if (firestoreData.activeTheme) {
+          setActiveTheme(firestoreData.activeTheme);
+          localStorage.setItem("gmuhammadali_active_theme", firestoreData.activeTheme);
         }
-      })
-      .catch((err) => console.error("Error reading central DB cache:", err));
+        if (firestoreData.projects) {
+          setProjects(firestoreData.projects);
+          localStorage.setItem("gmuhammadali_projects", JSON.stringify(firestoreData.projects));
+        }
+        if (firestoreData.skillCategories) {
+          setSkillCategories(firestoreData.skillCategories);
+          localStorage.setItem("gmuhammadali_skills", JSON.stringify(firestoreData.skillCategories));
+        }
+        if (firestoreData.experiences) {
+          setExperiences(firestoreData.experiences);
+          localStorage.setItem("gmuhammadali_experience", JSON.stringify(firestoreData.experiences));
+        }
+        if (firestoreData.messages) {
+          setMessages(firestoreData.messages);
+          localStorage.setItem("gmuhammadali_messages", JSON.stringify(firestoreData.messages));
+        }
+        if (firestoreData.branding) {
+          const loadedBranding = { ...firestoreData.branding };
+          if (loadedBranding.accentColor === "from-cyan-500 to-emerald-400") {
+            loadedBranding.accentColor = "from-nyanza to-olivine-light";
+            // Async background update to save updated values to server
+            try {
+              const portfolioDocRef = doc(db, "state", "portfolio");
+              setDoc(portfolioDocRef, { branding: loadedBranding }, { merge: true });
+            } catch (err) {
+              console.error("Failed to migrate branding style: ", err);
+            }
+          }
+          setBranding(loadedBranding);
+          localStorage.setItem("gmuhammadali_branding", JSON.stringify(loadedBranding));
+        }
+        if (firestoreData.articles) {
+          setArticles(firestoreData.articles);
+          localStorage.setItem("gmuhammadali_articles", JSON.stringify(firestoreData.articles));
+        }
+        if (firestoreData.videos) {
+          setVideos(firestoreData.videos);
+          localStorage.setItem("gmuhammadali_videos", JSON.stringify(firestoreData.videos));
+        }
+        if (firestoreData.images) {
+          setImages(firestoreData.images);
+          localStorage.setItem("gmuhammadali_images", JSON.stringify(firestoreData.images));
+        }
+        if (firestoreData.seoSettings) {
+          setSeoSettings(firestoreData.seoSettings);
+          localStorage.setItem("gmuhammadali_seo", JSON.stringify(firestoreData.seoSettings));
+        }
+        if (firestoreData.analytics) {
+          setAnalytics(firestoreData.analytics);
+          localStorage.setItem("gmuhammadali_analytics", JSON.stringify(firestoreData.analytics));
+        }
+      } else {
+        // Initialize state in cloud database on first run
+        const initialPayload = {
+          activeTheme: "cyan",
+          projects: NOTABLE_PROJECTS,
+          skillCategories: SKILL_CATEGORIES,
+          experiences: EXPERIENCE_TIMELINE,
+          messages: [],
+          branding: DEFAULT_BRANDING,
+          articles: DEFAULT_ARTICLES,
+          videos: DEFAULT_VIDEOS,
+          images: DEFAULT_IMAGES,
+          seoSettings: DEFAULT_SEO,
+          analytics: DEFAULT_ANALYTICS,
+        };
+        setDoc(portfolioDocRef, initialPayload)
+          .catch((err) => handleFirestoreError(err, OperationType.WRITE, "state/portfolio"));
+      }
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, "state/portfolio");
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const saveToServer = (updatedFields: any) => {
-    fetch("/api/db", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedFields),
-    })
-    .catch((err) => console.error("Error writing central DB state:", err));
+  const saveToServer = async (updatedFields: any) => {
+    const portfolioDocRef = doc(db, "state", "portfolio");
+    try {
+      await setDoc(portfolioDocRef, updatedFields, { merge: true });
+    } catch (err) {
+      handleFirestoreError(err, OperationType.WRITE, "state/portfolio");
+    }
   };
 
   const updateProjects = (updater: React.SetStateAction<Project[]>) => {
@@ -734,23 +767,23 @@ export default function App() {
             <div className="flex items-center space-x-1.5 border border-slate-900 bg-slate-950/80 p-1.5 rounded-full mr-2">
               <button
                 onClick={() => changeTheme("cyan")}
-                className={`w-3 h-3 rounded-full bg-cyan-400 hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "cyan" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-60"}`}
-                title="Cyan Magic"
+                className={`w-3 h-3 rounded-full bg-nyanza hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "cyan" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-60"}`}
+                title="Nyanza Sage"
               />
               <button
                 onClick={() => changeTheme("emerald")}
-                className={`w-3 h-3 rounded-full bg-emerald-400 hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "emerald" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-60"}`}
-                title="Emerald Spark"
+                className={`w-3 h-3 rounded-full bg-olivine-light hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "emerald" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-60"}`}
+                title="Olivine Sand"
               />
               <button
                 onClick={() => changeTheme("rose")}
-                className={`w-3 h-3 rounded-full bg-rose-400 hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "rose" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-60"}`}
-                title="Midnight Rose"
+                className={`w-3 h-3 rounded-full bg-slate-green hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "rose" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-60"}`}
+                title="Earthy Slate"
               />
               <button
                 onClick={() => changeTheme("amber")}
-                className={`w-3 h-3 rounded-full bg-amber-400 hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "amber" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-60"}`}
-                title="Crimson Amber"
+                className={`w-3 h-3 rounded-full bg-[linear-gradient(to_bottom_right,#DBD5C9,#CBE8B8)] hover:scale-110 active:scale-95 transition cursor-pointer ${activeTheme === "amber" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-60"}`}
+                title="Dual Sand & Sage"
               />
             </div>
 
@@ -835,23 +868,23 @@ export default function App() {
                 </a>
                 {/* Mobile Theme selector circles */}
                 <div className="py-2 border-y border-slate-900 flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-mono">SAHT MAVZUSI RANGI:</span>
+                  <span className="text-[10px] text-slate-500 font-mono">SAYT MAVZUSI RANGI:</span>
                   <div className="flex items-center space-x-3">
                     <button
                       onClick={() => changeTheme("cyan")}
-                      className={`w-4 h-4 rounded-full bg-cyan-400 active:scale-90 transition ${activeTheme === "cyan" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-50"}`}
+                      className={`w-4 h-4 rounded-full bg-nyanza active:scale-90 transition ${activeTheme === "cyan" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-50"}`}
                     />
                     <button
                       onClick={() => changeTheme("emerald")}
-                      className={`w-4 h-4 rounded-full bg-emerald-400 active:scale-90 transition ${activeTheme === "emerald" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-50"}`}
+                      className={`w-4 h-4 rounded-full bg-olivine-light active:scale-90 transition ${activeTheme === "emerald" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-50"}`}
                     />
                     <button
                       onClick={() => changeTheme("rose")}
-                      className={`w-4 h-4 rounded-full bg-rose-400 active:scale-90 transition ${activeTheme === "rose" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-50"}`}
+                      className={`w-4 h-4 rounded-full bg-slate-green active:scale-90 transition ${activeTheme === "rose" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-50"}`}
                     />
                     <button
                       onClick={() => changeTheme("amber")}
-                      className={`w-4 h-4 rounded-full bg-amber-400 active:scale-90 transition ${activeTheme === "amber" ? "ring-2 ring-white ring-offset-1 ring-offset-slate-950" : "opacity-50"}`}
+                      className={`w-4 h-4 rounded-full bg-[linear-gradient(to_bottom_right,#DBD5C9,#CBE8B8)] active:scale-90 transition ${activeTheme === "amber" ? "ring-2 ring-white ring-offset-1 ring-offset-olivine-dark" : "opacity-50"}`}
                     />
                   </div>
                 </div>
@@ -886,7 +919,7 @@ export default function App() {
         <section id="home" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center justify-between min-h-[500px] relative">
           
           {/* Cyber decorative grid graphics in background */}
-          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(8,145,178,0.15)_0%,transparent_60%)] z-0" />
+          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(203,232,184,0.15)_0%,transparent_60%)] z-0" />
           
           <div className="lg:col-span-7 space-y-6 relative z-10 text-left">
             <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-semibold tracking-wide text-cyan-400">
@@ -900,7 +933,7 @@ export default function App() {
             <div className="space-y-3">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-100 font-sans tracking-tight leading-none">
                 Muxammadali <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-nyanza via-slate-green to-olivine-light">
                   Gulmurodov
                 </span>
               </h1>
@@ -954,7 +987,7 @@ export default function App() {
           <div className="lg:col-span-5 relative z-10 w-full">
             {/* Elegant floating custom AI chatbot frame right inside the UI representing full-scale AI creator */}
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 rounded-2xl blur-xl animate-pulse pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-nyanza/15 to-slate-green/15 rounded-2xl blur-xl animate-pulse pointer-events-none" />
               <AIAssistant />
             </div>
           </div>
@@ -1332,7 +1365,7 @@ export default function App() {
 
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-100 font-sans">
               Keling, Birgalikda Yangi <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-green to-nyanza">
                 Cho'qqilarni Zabt Etamiz!
               </span>
             </h2>
@@ -1419,7 +1452,7 @@ export default function App() {
                     <span>{encryptingProgress}%</span>
                   </div>
                   <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-850">
-                    <div className="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full" style={{ width: `${encryptingProgress}%` }} />
+                    <div className="bg-gradient-to-r from-nyanza to-slate-green h-full rounded-full" style={{ width: `${encryptingProgress}%` }} />
                   </div>
                 </div>
 

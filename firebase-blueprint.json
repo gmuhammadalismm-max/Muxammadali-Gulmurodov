@@ -1,0 +1,157 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "A showcase project",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "tagline": { "type": "string" },
+        "description": { "type": "string" },
+        "usersCount": { "type": "string" },
+        "performanceMetric": { "type": "string" },
+        "tech": { "type": "array" },
+        "link": { "type": "string" },
+        "category": { "type": "string", "enum": ["ai", "marketing", "cyber", "web"] }
+      },
+      "required": ["id", "title", "description", "tech", "category"]
+    },
+    "SkillCategory": {
+      "title": "SkillCategory",
+      "description": "A group of expertise skills",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "icon": { "type": "string" },
+        "color": { "type": "string" },
+        "description": { "type": "string" },
+        "skills": { "type": "array" }
+      },
+      "required": ["id", "title", "skills"]
+    },
+    "Experience": {
+      "title": "Experience",
+      "description": "Professional experience position",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "type": "string" },
+        "company": { "type": "string" },
+        "period": { "type": "string" },
+        "highlights": { "type": "array" },
+        "icon": { "type": "string" }
+      },
+      "required": ["id", "role", "company", "period", "highlights"]
+    },
+    "LogoBranding": {
+      "title": "LogoBranding",
+      "description": "Visual branding and title details of the site",
+      "type": "object",
+      "properties": {
+        "initials": { "type": "string" },
+        "name": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "accentColor": { "type": "string" },
+        "avatarUrl": { "type": "string" }
+      },
+      "required": ["initials", "name", "subtitle", "accentColor"]
+    },
+    "AdminArticle": {
+      "title": "AdminArticle",
+      "description": "A technical article published on the site",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "content": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "author": { "type": "string" },
+        "publishDate": { "type": "string" },
+        "readTime": { "type": "string" }
+      },
+      "required": ["id", "title", "content"]
+    },
+    "AdminVideo": {
+      "title": "AdminVideo",
+      "description": "Showcase or educational video",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "embedUrl": { "type": "string" },
+        "duration": { "type": "string" },
+        "uploadedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "embedUrl"]
+    },
+    "AdminImage": {
+      "title": "AdminImage",
+      "description": "Uploaded asset image",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "size": { "type": "string" },
+        "uploadedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "url", "size", "uploadedAt"]
+    },
+    "SEOSettings": {
+      "title": "SEOSettings",
+      "description": "Search Engine Optimization settings",
+      "type": "object",
+      "properties": {
+        "keywords": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "isGoogleIndexed": { "type": "boolean" },
+        "sitemapUrl": { "type": "string" }
+      },
+      "required": ["keywords", "metaDescription", "isGoogleIndexed"]
+    },
+    "AnalyticsMetric": {
+      "title": "AnalyticsMetric",
+      "description": "Usage and interaction stats counters",
+      "type": "object",
+      "properties": {
+        "views": { "type": "number" },
+        "clicks": { "type": "number" },
+        "conversion": { "type": "number" },
+        "consultationsBooked": { "type": "number" }
+      },
+      "required": ["views", "clicks", "conversion", "consultationsBooked"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "User feedback block sent via Contact form",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["id", "name", "email", "message", "timestamp", "isRead"]
+    }
+  },
+  "firestore": {
+    "state/portfolio": {
+      "schema": {
+        "$ref": "#/entities/PortfolioState"
+      },
+      "description": "Global settings, documents, lists unified in single doc to keep it robust and allow absolute atomic updates across clients"
+    },
+    "messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ContactMessage"
+      },
+      "description": "Contact form submissions written by anyone and queried by admins"
+    }
+  }
+}
