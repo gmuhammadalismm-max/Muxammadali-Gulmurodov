@@ -725,23 +725,42 @@ export default function App() {
           <a
             href="#home"
             onClick={(e) => handleNavClick(e, "home")}
-            className="flex items-center space-x-2 mr-4"
+            className="flex items-center space-x-2.5 mr-4 cursor-pointer"
           >
             {branding.avatarUrl ? (
               <img
                 src={branding.avatarUrl}
                 alt={branding.name}
-                className="w-8 h-8 rounded-lg object-cover border border-slate-800"
+                className="w-10 h-10 rounded-full object-cover border border-slate-800"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <span className={`w-8 h-8 rounded-lg bg-gradient-to-tr ${branding.accentColor} flex items-center justify-center font-bold text-slate-950 text-base`}>
+              <span className={`w-10 h-10 rounded-full bg-gradient-to-tr ${branding.accentColor} flex items-center justify-center font-bold text-slate-950 text-base border border-slate-800`}>
                 {branding.initials}
               </span>
             )}
             <div className="flex flex-col">
-              <span className="font-sans font-bold text-slate-100 text-sm tracking-tight leading-tight">{branding.name}</span>
-              <span className="font-mono text-[9px] text-cyan-400 leading-none">{branding.subtitle}</span>
+              <span className="font-sans font-bold text-slate-100 text-sm tracking-tight leading-none mb-1">{branding.name}</span>
+              
+              {/* Cool interactive Switch for Dark Mode Toggle (ON / OFF) under user request */}
+              <div 
+                className="flex items-center space-x-1.5 bg-slate-900/60 hover:bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800/80 cursor-pointer select-none"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsDark(!isDark);
+                }}
+                title={isDark ? "Kunduzgi rejim (Light Mode) ga o'tish" : "Tungi rejim (Dark Mode) ga o'tish"}
+              >
+                <span className="text-[8px] font-mono font-bold text-slate-400">TUNGI:</span>
+                <span className={`text-[8px] font-mono font-black ${isDark ? "text-cyan-400" : "text-slate-500"}`}>
+                  {isDark ? "ON" : "OFF"}
+                </span>
+                {/* Micro toggle graphic */}
+                <div className={`w-4 h-2.5 rounded-full border border-slate-700 p-0.5 flex items-center transition-colors ${isDark ? "bg-cyan-900/60" : "bg-slate-950"}`}>
+                  <div className={`w-1.5 h-1.5 rounded-full bg-white transition-all transform duration-200 ${isDark ? "translate-x-1 border border-cyan-400 bg-cyan-400" : "translate-x-0"}`} />
+                </div>
+              </div>
             </div>
           </a>
 
@@ -1588,11 +1607,11 @@ export default function App() {
                 <img
                   src={branding.avatarUrl}
                   alt={branding.name}
-                  className="w-6 h-6 rounded object-cover border border-slate-800"
+                  className="w-6 h-6 rounded-full object-cover border border-slate-800"
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <span className={`w-6 h-6 rounded bg-gradient-to-tr ${branding.accentColor} flex items-center justify-center font-bold text-slate-950 text-xs`}>
+                <span className={`w-6 h-6 rounded-full bg-gradient-to-tr ${branding.accentColor} flex items-center justify-center font-bold text-slate-950 text-xs`}>
                   {branding.initials}
                 </span>
               )}
@@ -2053,52 +2072,6 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
-
-      {/* 👑 DYNAMIC 3D GLASSMORPHIC BUBBLE MENU (Match uploaded design) */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm sm:max-w-md px-4 pointer-events-none">
-        <div className="relative bg-gradient-to-r from-[#1E5CE3] to-[#2563EB]/95 backdrop-blur-xl border border-white/20 rounded-full py-2 px-3 sm:px-5 flex items-center justify-between gap-1 shadow-[0_16px_36px_rgba(26,92,229,0.35),inset_0_2px_4px_rgba(255,255,255,0.25)] pointer-events-auto">
-          {[
-            { id: "home", label: "Asosiy", icon: Home },
-            { id: "skills", label: "Skills", icon: Cpu },
-            { id: "threatmap", label: "Kiber", icon: Shield },
-            { id: "sandbox", label: "Sandbox", icon: Terminal },
-            { id: "projects", label: "Loyihalar", icon: Briefcase },
-            { id: "contact", label: "Aloqa", icon: MessageSquare }
-          ].map((item) => {
-            const IconComponent = item.icon;
-            const isActive = activeSection === item.id;
-            return (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className="relative flex flex-col items-center justify-center w-11 h-11 rounded-full transition-all duration-300 group"
-                title={item.label}
-              >
-                {isActive ? (
-                  /* Stunning 3D-feeling glassy bubble/sphere with white edge highlights */
-                  <motion.div
-                    layoutId="activeBubbleMenuCircle"
-                    className="absolute -top-7 w-12 h-12 rounded-full bg-white/25 backdrop-blur-lg border border-white/50 shadow-[inset_0_4px_10px_rgba(255,255,255,0.45),0_10px_20px_rgba(26,92,229,0.3)] flex items-center justify-center"
-                    transition={{ type: "spring", stiffness: 380, damping: 24 }}
-                  >
-                    <IconComponent className="w-5 h-5 text-white" />
-                    {/* Glowing highlight lens */}
-                    <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
-                  </motion.div>
-                ) : (
-                  <IconComponent className="w-5 h-5 text-blue-100 group-hover:text-white transition-all group-hover:scale-115" />
-                )}
-                
-                {/* Micro menu text labels */}
-                <span className={`text-[8px] font-mono mt-1 font-semibold leading-none ${isActive ? "opacity-0 mt-6" : "text-blue-200 group-hover:text-white"} transition-all duration-300`}>
-                  {item.label}
-                </span>
-              </a>
-            );
-          })}
-        </div>
-      </div>
 
     </div>
   );
