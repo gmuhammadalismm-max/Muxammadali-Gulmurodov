@@ -674,12 +674,68 @@ export default function App() {
   const [encryptionLogs, setEncryptionLogs] = useState<string[]>([]);
   const [sendSuccess, setSendSuccess] = useState(false);
 
+  const isPhoneValid = () => {
+    const digits = contactPhone.replace(/\D/g, "");
+    if (digits.startsWith("998")) {
+      return digits.length === 12;
+    }
+    return digits.length >= 9 && digits.length <= 15;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
+    
+    if (!input) {
+      setContactPhone("");
+      return;
+    }
+    
+    let digits = input.replace(/\D/g, "");
+    
+    // Auto prefixing for Uzbek carriers if they write digits like 901234567 directly
+    if (input.startsWith("9") && !input.startsWith("998") && digits.length >= 2) {
+      const prefix = digits.slice(0, 2);
+      const uzCodes = ["33", "50", "77", "88", "90", "91", "92", "93", "94", "95", "97", "98", "99"];
+      if (uzCodes.includes(prefix)) {
+        digits = "998" + digits;
+      }
+    } else if (!input.startsWith("+") && digits.length <= 9 && digits.length >= 2) {
+      const prefix = digits.slice(0, 2);
+      const uzCodes = ["33", "50", "77", "88", "90", "91", "92", "93", "94", "95", "97", "98", "99"];
+      if (uzCodes.includes(prefix)) {
+        digits = "998" + digits;
+      }
+    }
+    
+    let formatted = "";
+    if (digits.startsWith("998")) {
+      formatted = "+998";
+      if (digits.length > 3) {
+        formatted += ` (${digits.slice(3, 5)}`;
+      }
+      if (digits.length > 5) {
+        formatted += `) ${digits.slice(5, 8)}`;
+      }
+      if (digits.length > 8) {
+        formatted += `-${digits.slice(8, 10)}`;
+      }
+      if (digits.length > 10) {
+        formatted += `-${digits.slice(10, 12)}`;
+      }
+    } else {
+      formatted = "+" + digits.slice(0, 15);
+    }
+    
+    setContactPhone(formatted);
+  };
+
   // Active Category details inside selector
   const activeCategoryDetails = skillCategories.find((cat) => cat.id === selectedCategory) || skillCategories[0];
 
   const handleBookConsultation = (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactName || !contactPhone || !contactMessage) return;
+    if (!isPhoneValid()) return;
 
     // Securely capture values for state logging
     const savedName = contactName;
@@ -1564,10 +1620,32 @@ export default function App() {
                     type="tel"
                     required
                     value={contactPhone}
-                    onChange={(e) => setContactPhone(e.target.value)}
+                    onChange={handlePhoneChange}
                     placeholder="Masalan: +998 90 123 45 67"
-                    className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition animate-fade-in"
+                    className={`w-full bg-slate-950 border rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition animate-fade-in ${
+                      contactPhone
+                        ? isPhoneValid()
+                          ? "border-emerald-500/70 focus:border-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.1)]"
+                          : "border-amber-500/70 focus:border-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.1)]"
+                        : "border-slate-900 focus:border-cyan-500"
+                    }`}
                   />
+                  {contactPhone && (
+                    <div className="mt-1.5 flex items-center justify-between text-[10px] font-mono select-none">
+                      {isPhoneValid() ? (
+                        <span className="text-emerald-400 flex items-center gap-1 font-semibold animate-fade-in">
+                          ✓ Raqam to'liq formatda
+                        </span>
+                      ) : (
+                        <span className="text-amber-400 animate-pulse">
+                          ⚠ Raqam to'liq emas (Kamida 12 ta raqam bo'lishi kerak)
+                        </span>
+                      )}
+                      <span className="text-slate-500 text-[9px] uppercase font-bold">
+                        Jami: {contactPhone.replace(/\D/g, "").length}/12 xona
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -1585,7 +1663,12 @@ export default function App() {
                 <button
                   type="submit"
                   id="submit-contact-btn"
-                  className="w-full flex items-center justify-center gap-1.5 cursor-pointer bg-emerald-500 font-bold hover:bg-emerald-400 text-slate-950 text-xs py-2.5 rounded-lg font-mono tracking-wider transition duration-300 shadow-md shadow-emerald-950/20"
+                  disabled={!contactName || !contactPhone || !contactMessage || !isPhoneValid()}
+                  className={`w-full flex items-center justify-center gap-1.5 font-bold text-xs py-2.5 rounded-lg font-mono tracking-wider transition-all duration-300 shadow-md ${
+                    (!contactName || !contactPhone || !contactMessage || !isPhoneValid())
+                      ? "bg-slate-950 text-slate-600 border border-slate-900/65 opacity-55 cursor-not-allowed"
+                      : "bg-emerald-500 hover:bg-emerald-400 text-slate-950 cursor-pointer shadow-emerald-950/20"
+                  }`}
                 >
                   <Send className="w-3.5 h-3.5 stroke-[2.5]" />
                   <span>XABARNI ENCRYPT QILIB TRANS-MISSION ETISh</span>

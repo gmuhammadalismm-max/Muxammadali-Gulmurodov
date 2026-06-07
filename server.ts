@@ -297,21 +297,34 @@ app.post("/api/telegram-notify", async (req, res) => {
     });
   }
 
-  try {
-    const textMessage = `🎯 *Yangi Murojaat!*\n\n` +
-      `👤 *Ism:* ${name}\n` +
-      `📞 *Tel:* ${phone}\n` +
-      `✉️ *Xabar:* ${message}\n\n` +
-      `⏱️ *Vaqt:* ${new Date().toLocaleString('uz-UZ')}`;
+  // Handle case where user entered bot token prefix manually
+  let cleanedBotToken = finalBotToken.trim();
+  if (cleanedBotToken.toLowerCase().startsWith("bot")) {
+    cleanedBotToken = cleanedBotToken.substring(3);
+  }
 
-    const url = `https://api.telegram.org/bot${finalBotToken}/sendMessage`;
+  try {
+    const escapeHtml = (text: string) => {
+      return (text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    };
+
+    const textMessage = `🎯 <b>Yangi Murojaat!</b>\n\n` +
+      `👤 <b>Ism:</b> ${escapeHtml(name)}\n` +
+      `📞 <b>Tel:</b> <code>${escapeHtml(phone)}</code>\n` +
+      `✉️ <b>Xabar:</b> ${escapeHtml(message)}\n\n` +
+      `⏱️ <b>Vaqt:</b> <i>${escapeHtml(new Date().toLocaleString('uz-UZ'))}</i>`;
+
+    const url = `https://api.telegram.org/bot${cleanedBotToken}/sendMessage`;
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: finalChatId,
+        chat_id: finalChatId.trim(),
         text: textMessage,
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
       }),
     });
 
