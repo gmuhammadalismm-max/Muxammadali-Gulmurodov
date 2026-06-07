@@ -345,7 +345,15 @@ export default function App() {
   // Durable persistent states with defaults fallback
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem("gmuhammadali_projects");
-    return saved ? JSON.parse(saved) : NOTABLE_PROJECTS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) ? parsed.filter((p: any) => p && p.id !== "proj4") : NOTABLE_PROJECTS;
+      } catch (e) {
+        return NOTABLE_PROJECTS;
+      }
+    }
+    return NOTABLE_PROJECTS;
   });
 
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>(() => {
@@ -405,15 +413,13 @@ export default function App() {
           localStorage.setItem("gmuhammadali_active_theme", firestoreData.activeTheme);
         }
         if (firestoreData.projects) {
-          const loadedProjects = [...firestoreData.projects];
-          const hasProj4 = loadedProjects.some(p => p.id === "proj4");
-          if (!hasProj4) {
-            loadedProjects.push(NOTABLE_PROJECTS[3]);
+          const loadedProjects = firestoreData.projects.filter((p: any) => p && p.id !== "proj4");
+          if (firestoreData.projects.length !== loadedProjects.length) {
             try {
               const portfolioDocRef = doc(db, "state", "portfolio");
               setDoc(portfolioDocRef, { projects: loadedProjects }, { merge: true });
             } catch (err) {
-              console.error("Failed to migrate projects list: ", err);
+              console.error("Failed to clean up proj4 from firestore: ", err);
             }
           }
           setProjects(loadedProjects);
