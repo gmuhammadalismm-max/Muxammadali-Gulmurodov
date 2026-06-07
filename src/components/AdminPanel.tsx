@@ -16,6 +16,50 @@ import {
   LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric 
 } from "../types";
 
+// Client-side image compression utility to ensure payloads stay well under the 1MB Firestore size limit, enabling real-time multi-device synchronization.
+const compressImage = (file: File, maxW = 800, maxH = 800, quality = 0.65): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxW) {
+            height = Math.round((height * maxW) / width);
+            width = maxW;
+          }
+        } else {
+          if (height > maxH) {
+            width = Math.round((width * maxH) / height);
+            height = maxH;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL("image/jpeg", quality);
+          resolve(dataUrl);
+        } else {
+          resolve(event.target?.result as string);
+        }
+      };
+      img.onerror = () => {
+        resolve(event.target?.result as string);
+      };
+    };
+    reader.onerror = (err) => reject(err);
+  });
+};
+
 interface AdminPanelProps {
   isOpen: boolean;
   onClose: () => void;
@@ -447,7 +491,7 @@ export default function AdminPanel({
   };
 
   // --- ASSET IMAGES UPLOADS GALLERY ---
-  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -455,13 +499,20 @@ export default function AdminPanel({
       setImageNameFormInput(file.name.split(".")[0]);
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        setImageUrlFormInput(event.target.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      // Compress image client side to keep Firestore document size well within limits
+      const compressedBase64 = await compressImage(file, 800, 800, 0.65);
+      setImageUrlFormInput(compressedBase64);
+    } catch (err) {
+      console.error("Image compression failed, using original size:", err);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setImageUrlFormInput(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleMockImageUpload = (e: React.FormEvent) => {
@@ -1096,6 +1147,14 @@ export default function AdminPanel({
                               onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (file) {
+                                  const sizeMb = file.size / (1024 * 1024);
+                                  if (sizeMb > 1.5) {
+                                    alert(
+                                      `❌ Video darsligi hajmi juda katta (${sizeMb.toFixed(1)} MB).\n\nPortfolio barcha telefon va qurilmalarda bir xil sinxron ishlashi uchun video fayli hajmi 1.5 MB dan kichik bo'lishi kerak.\n\nTavsiya: Dars videosini YouTube yoki Google Drive-ga yuklab, uning embed/ulanish havolasini tepaga kiriting. Bu barcha qurilmalarda juda tez va bexato yuklanadi!`
+                                    );
+                                    e.target.value = "";
+                                    return;
+                                  }
                                   const reader = new FileReader();
                                   reader.onload = (event) => {
                                     if (event.target?.result) {
