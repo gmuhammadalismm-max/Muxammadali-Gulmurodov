@@ -149,17 +149,6 @@ const NOTABLE_PROJECTS: Project[] = [
     performanceMetric: "SEO Score 95%+",
     tech: ["Gemini 3.5 Flash", "Express Backend", "SEO Crawler", "D3.js Charts"],
     category: "marketing"
-  },
-  {
-    id: "proj4",
-    title: "3D Glassmorphic UI Menu",
-    tagline: "3D shaffof dizayn va UI/UX konsepti",
-    description: "Markaziy oyna effekti bilan yaratilgan shaffof datchik pufakchasi, uning ichida analitika belgisi va ko'pikli ko'k paneli. Soft shadows, zamonaviy minimal uslub, yorug'lik effektlari va nozik to'rli fon.",
-    usersCount: "High Fidelity render",
-    performanceMetric: "UX Concept Pro",
-    tech: ["Glassmorphism", "Vite", "Tailwind CSS", "Figma 3D"],
-    category: "web",
-    imageUrl: glassmorphismMenuImg
   }
 ];
 
@@ -2072,6 +2061,49 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* 👑 DYNAMIC 3D GLASSMORPHIC BUBBLE MENU */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm sm:max-w-md px-4 pointer-events-none">
+        <div className="relative bg-gradient-to-r from-[#1E5CE3] to-[#2563EB]/95 backdrop-blur-xl border border-white/20 rounded-full py-2 px-3 sm:px-5 flex items-center justify-between gap-1 shadow-[0_16px_36px_rgba(26,92,229,0.35),inset_0_2px_4px_rgba(255,255,255,0.25)] pointer-events-auto">
+          {[
+            { id: "home", label: "Asosiy", icon: Home },
+            { id: "skills", label: "Skills", icon: Cpu },
+            { id: "threatmap", label: "Kiber", icon: Shield },
+            { id: "sandbox", label: "Sandbox", icon: Terminal },
+            { id: "projects", label: "Loyihalar", icon: Briefcase },
+            { id: "contact", label: "Aloqa", icon: MessageSquare }
+          ].map((item) => {
+            const IconComponent = item.icon;
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className="relative flex flex-col items-center justify-center w-11 h-11 rounded-full transition-all duration-300 group"
+                title={item.label}
+              >
+                {isActive ? (
+                  <motion.div
+                    layoutId="activeBubbleMenuCircle"
+                    className="absolute -top-7 w-12 h-12 rounded-full bg-white/25 backdrop-blur-lg border border-white/50 shadow-[inset_0_4px_10px_rgba(255,255,255,0.45),0_10px_20px_rgba(26,92,229,0.3)] flex items-center justify-center"
+                    transition={{ type: "spring", stiffness: 380, damping: 24 }}
+                  >
+                    <IconComponent className="w-5 h-5 text-white" />
+                    <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
+                  </motion.div>
+                ) : (
+                  <IconComponent className="w-5 h-5 text-blue-100 group-hover:text-white transition-all group-hover:scale-115" />
+                )}
+                
+                <span className={`text-[8px] font-mono mt-1 font-semibold leading-none ${isActive ? "opacity-0 mt-6" : "text-blue-200 group-hover:text-white"} transition-all duration-300`}>
+                  {item.label}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
 
     </div>
   );
