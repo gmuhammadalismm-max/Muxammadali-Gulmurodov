@@ -18,7 +18,6 @@ import CyberThreatMap from "./components/CyberThreatMap";
 import ToolsSandbox from "./components/ToolsSandbox";
 import AIAssistant from "./components/AIAssistant";
 import AdminPanel from "./components/AdminPanel";
-import TechShowpiece from "./components/TechShowpiece";
 import { SkillCategory, Project, Experience, ContactMessage, LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric, TelegramSettings } from "./types";
 // @ts-ignore
 import glassmorphismMenuImg from "./assets/images/glassmorphism_menu_1780781413319.png";
@@ -765,9 +764,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 font-sans tracking-normal antialiased text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950 relative overflow-hidden">
-      
-      {/* Immersive Cyber Agency Custom Interactive Background Backdrop */}
-      <TechShowpiece />
       
       {/* Dynamic Navigation */}
       <nav className="fixed top-0 inset-x-0 bg-slate-950/75 backdrop-blur-md border-b border-slate-900 z-50">
