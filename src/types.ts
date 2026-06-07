@@ -61,9 +61,16 @@ export interface ContactMessage {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   message: string;
   timestamp: string;
   isRead: boolean;
+}
+
+export interface TelegramSettings {
+  botToken: string;
+  chatId: string;
+  isEnabled: boolean;
 }
 
 export interface LogoBranding {

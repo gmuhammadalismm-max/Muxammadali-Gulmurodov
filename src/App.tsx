@@ -11,14 +11,15 @@ import {
   Sparkles, Shield, TrendingUp, Terminal, Code2, Phone, Mail, Calendar, 
   ArrowUpRight, Instagram, Send, Cpu, Check, Menu, X, Users, Globe, 
   ChevronRight, ArrowRight, ShieldCheck, MessageSquare, Zap, Palette, ExternalLink,
-  Video, BookOpen, Home, Briefcase, Sun, Moon
+  Video, BookOpen, Home, Briefcase, Sun, Moon, Eye
 } from "lucide-react";
 
 import CyberThreatMap from "./components/CyberThreatMap";
 import ToolsSandbox from "./components/ToolsSandbox";
 import AIAssistant from "./components/AIAssistant";
 import AdminPanel from "./components/AdminPanel";
-import { SkillCategory, Project, Experience, ContactMessage, LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric } from "./types";
+import TechShowpiece from "./components/TechShowpiece";
+import { SkillCategory, Project, Experience, ContactMessage, LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric, TelegramSettings } from "./types";
 // @ts-ignore
 import glassmorphismMenuImg from "./assets/images/glassmorphism_menu_1780781413319.png";
 
@@ -218,6 +219,12 @@ const DEFAULT_SEO: SEOSettings = {
   sitemapUrl: "https://gmuhammadali.uz/sitemap.xml"
 };
 
+const DEFAULT_TELEGRAM: TelegramSettings = {
+  botToken: "",
+  chatId: "",
+  isEnabled: false
+};
+
 const DEFAULT_ANALYTICS: AnalyticsMetric = {
   views: 12480,
   clicks: 4320,
@@ -396,6 +403,11 @@ export default function App() {
     return saved ? JSON.parse(saved) : DEFAULT_SEO;
   });
 
+  const [telegramSettings, setTelegramSettings] = useState<TelegramSettings>(() => {
+    const saved = localStorage.getItem("gmuhammadali_telegram");
+    return saved ? JSON.parse(saved) : DEFAULT_TELEGRAM;
+  });
+
   const [analytics, setAnalytics] = useState<AnalyticsMetric>(() => {
     const saved = localStorage.getItem("gmuhammadali_analytics");
     return saved ? JSON.parse(saved) : DEFAULT_ANALYTICS;
@@ -468,6 +480,10 @@ export default function App() {
           setSeoSettings(firestoreData.seoSettings);
           localStorage.setItem("gmuhammadali_seo", JSON.stringify(firestoreData.seoSettings));
         }
+        if (firestoreData.telegramSettings) {
+          setTelegramSettings(firestoreData.telegramSettings);
+          localStorage.setItem("gmuhammadali_telegram", JSON.stringify(firestoreData.telegramSettings));
+        }
         if (firestoreData.analytics) {
           setAnalytics(firestoreData.analytics);
           localStorage.setItem("gmuhammadali_analytics", JSON.stringify(firestoreData.analytics));
@@ -486,6 +502,7 @@ export default function App() {
           images: DEFAULT_IMAGES,
           seoSettings: DEFAULT_SEO,
           analytics: DEFAULT_ANALYTICS,
+          telegramSettings: DEFAULT_TELEGRAM,
         };
         setDoc(portfolioDocRef, initialPayload)
           .catch((err) => handleFirestoreError(err, OperationType.WRITE, "state/portfolio"));
@@ -504,6 +521,15 @@ export default function App() {
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, "state/portfolio");
     }
+  };
+
+  const updateTelegramSettings = (updater: React.SetStateAction<TelegramSettings>) => {
+    setTelegramSettings((prev) => {
+      const next = typeof updater === "function" ? (updater as any)(prev) : updater;
+      localStorage.setItem("gmuhammadali_telegram", JSON.stringify(next));
+      saveToServer({ telegramSettings: next });
+      return next;
+    });
   };
 
   const updateProjects = (updater: React.SetStateAction<Project[]>) => {
@@ -643,7 +669,7 @@ export default function App() {
 
   // Secure Message Form states
   const [contactName, setContactName] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
   const [contactMessage, setContactMessage] = useState("");
   const [encryptingProgress, setEncryptingProgress] = useState<number | null>(null);
   const [encryptionLogs, setEncryptionLogs] = useState<string[]>([]);
@@ -654,11 +680,11 @@ export default function App() {
 
   const handleBookConsultation = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactName || !contactEmail || !contactMessage) return;
+    if (!contactName || !contactPhone || !contactMessage) return;
 
     // Securely capture values for state logging
     const savedName = contactName;
-    const savedEmail = contactEmail;
+    const savedPhone = contactPhone;
     const savedMsg = contactMessage;
 
     setEncryptingProgress(0);
@@ -676,7 +702,7 @@ export default function App() {
             setEncryptingProgress(null);
             setSendSuccess(true);
             setContactName("");
-            setContactEmail("");
+            setContactPhone("");
             setContactMessage("");
           }, 800);
           return 100;
@@ -684,17 +710,44 @@ export default function App() {
 
         const nextPrg = prev + 20;
         if (nextPrg === 40) {
-          setEncryptionLogs((l) => [...l, "🔍 Yuboruvchi avtorizatsiyasi tasdiqlanmoqda: " + savedEmail]);
+          setEncryptionLogs((l) => [...l, "🔍 Yuboruvchi aloqa kanali tekshirilmoqda: " + savedPhone]);
         } else if (nextPrg === 80) {
           setEncryptionLogs((l) => [...l, "🔒 Shifrlangan paket Tashkent Core serveriga yo'llandi."]);
         } else if (nextPrg === 100) {
-          setEncryptionLogs((l) => [...l, "✅ Paket muvaffaqiyatli saqlandi. Aloqa o'rnatildi!"]);
+          setEncryptionLogs((l) => [...l, "✅ Paket muvaffaqiyatli saqlandi va Telegram orqali uzatildi!"]);
           
+          // Securely send Telegram notification via backend proxy endpoint
+          fetch("/api/telegram-notify", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: savedName,
+              phone: savedPhone,
+              message: savedMsg,
+              botToken: telegramSettings.botToken,
+              chatId: telegramSettings.chatId
+            }),
+          })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              console.log("Telegram notification sent successfully.");
+            } else {
+              console.warn("Telegram error:", data.error);
+            }
+          })
+          .catch((err) => {
+            console.error("Error notifying Telegram:", err);
+          });
+
           // Instantly record the new message into local state & storage for admin review
           const newMsg: ContactMessage = {
             id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
             name: savedName,
-            email: savedEmail,
+            email: savedPhone, // Backward compatibility fallback
+            phone: savedPhone,
             message: savedMsg,
             timestamp: new Date().toLocaleTimeString() + " | " + new Date().toLocaleDateString(),
             isRead: false
@@ -711,7 +764,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans tracking-normal antialiased text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-950 font-sans tracking-normal antialiased text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950 relative overflow-hidden">
+      
+      {/* Immersive Cyber Agency Custom Interactive Background Backdrop */}
+      <TechShowpiece />
       
       {/* Dynamic Navigation */}
       <nav className="fixed top-0 inset-x-0 bg-slate-950/75 backdrop-blur-md border-b border-slate-900 z-50">
@@ -1006,7 +1062,7 @@ export default function App() {
         <section id="home" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center justify-between min-h-[500px] relative">
           
           {/* Cyber decorative grid graphics in background */}
-          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(203,232,184,0.15)_0%,transparent_60%)] z-0" />
+          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.18)_0%,transparent_60%)] z-0" />
           
           <div className="lg:col-span-7 space-y-6 relative z-10 text-left">
             <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-semibold tracking-wide text-cyan-400">
@@ -1507,13 +1563,13 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] text-slate-500 uppercase font-mono mb-1">Email yoki Telegram</label>
+                  <label className="block text-[10px] text-slate-500 uppercase font-mono mb-1">Telefon raqamingiz</label>
                   <input
-                    type="text"
+                    type="tel"
                     required
-                    value={contactEmail}
-                    onChange={(e) => setContactEmail(e.target.value)}
-                    placeholder="Masalan: @asliddin_dev yoki abc@mail.com"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    placeholder="Masalan: +998 90 123 45 67"
                     className="w-full bg-slate-950 border border-slate-900 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition animate-fade-in"
                   />
                 </div>
@@ -1678,6 +1734,9 @@ export default function App() {
             setSeoSettings={updateSeoSettings}
             analytics={analytics}
             setAnalytics={updateAnalytics}
+            statusNotUsed1="" // placeholder to keep structural diff clean
+            telegramSettings={telegramSettings}
+            setTelegramSettings={updateTelegramSettings}
           />
         )}
       </AnimatePresence>

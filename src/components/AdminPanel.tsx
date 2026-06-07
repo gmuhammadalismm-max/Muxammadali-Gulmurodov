@@ -9,11 +9,11 @@ import {
   Lock, Unlock, Settings, Trash2, Plus, Edit2, Save, Check, X, 
   ShieldAlert, Sparkles, TrendingUp, Code2, Eye, Mail, Terminal, 
   ChevronRight, MessageSquare, Briefcase, AlertOctagon, Radio, Cpu,
-  Image as ImageIcon, Video, Globe, Key, BarChart3, Upload, ShieldCheck, Award
+  Image as ImageIcon, Video, Globe, Key, BarChart3, Upload, ShieldCheck, Award, Send
 } from "lucide-react";
 import { 
   Project, SkillCategory, Experience, ContactMessage, ThreatEvent,
-  LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric 
+  LogoBranding, AdminArticle, AdminVideo, AdminImage, SEOSettings, AnalyticsMetric, TelegramSettings 
 } from "../types";
 
 // Client-side image compression utility to ensure payloads stay well under the 1MB Firestore size limit, enabling real-time multi-device synchronization.
@@ -83,6 +83,8 @@ interface AdminPanelProps {
   setSeoSettings: React.Dispatch<React.SetStateAction<SEOSettings>>;
   analytics: AnalyticsMetric;
   setAnalytics: React.Dispatch<React.SetStateAction<AnalyticsMetric>>;
+  telegramSettings: TelegramSettings;
+  setTelegramSettings: React.Dispatch<React.SetStateAction<TelegramSettings>>;
 }
 
 type AdminTab = 
@@ -121,8 +123,10 @@ export default function AdminPanel({
   seoSettings,
   setSeoSettings,
   analytics,
-  setAnalytics
-}: AdminPanelProps) {
+  setAnalytics,
+  telegramSettings,
+  setTelegramSettings
+}: AdminPanelProps & { statusNotUsed1?: string }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [authError, setAuthError] = useState("");
@@ -2134,6 +2138,73 @@ export default function AdminPanel({
                       >
                         Tozalash loglari
                       </button>
+                    </div>
+                  </div>
+
+                  {/* TELEGRAM NOTIFICATION SYSTEM CONFIGURATION */}
+                  <div className="bg-slate-900/10 border border-slate-900 rounded-xl p-5 space-y-4 font-mono mt-6">
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                        <Send className="w-4 h-4 text-cyan-400 animate-pulse" />
+                        Telegram Xabarnoma Tizimi Sozlamalari
+                      </h4>
+                      <p className="text-[11px] text-slate-500 font-sans mt-0.5">
+                        Mijozlar portfoliodagi aloqa formasi orqali xabar yozishganda, u sizning shaxsiy Telegram botingiz orqali zudlik bilan sizga yetib boradi.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+                      <div>
+                        <label className="block text-[10px] text-slate-500 uppercase mb-1">Telegram Bot Token (HTTP API Key)</label>
+                        <input
+                          type="password"
+                          placeholder="Token (masalan: 123456:ABC...)"
+                          value={telegramSettings?.botToken || ""}
+                          onChange={(e) => setTelegramSettings(prev => ({ ...prev, botToken: e.target.value }))}
+                          className="w-full bg-slate-950 border border-slate-850 rounded px-3 py-1.5 text-slate-100 focus:outline-none placeholder-slate-700 font-sans"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] text-slate-500 uppercase mb-1">Chat ID (Shaxsiy ID)</label>
+                        <input
+                          type="text"
+                          placeholder="Chat ID (masalan: 54321098)"
+                          value={telegramSettings?.chatId || ""}
+                          onChange={(e) => setTelegramSettings(prev => ({ ...prev, chatId: e.target.value }))}
+                          className="w-full bg-slate-950 border border-slate-850 rounded px-3 py-1.5 text-slate-100 focus:outline-none placeholder-slate-700"
+                        />
+                      </div>
+
+                      <div className="flex flex-col justify-end">
+                        <button
+                          onClick={() => setTelegramSettings(prev => ({ ...prev, isEnabled: !prev.isEnabled }))}
+                          className={`w-full py-2 px-4 cursor-pointer font-bold rounded tracking-wider flex items-center justify-center gap-2 transition duration-300 ${
+                            telegramSettings?.isEnabled && telegramSettings?.botToken && telegramSettings?.chatId
+                              ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950" 
+                              : "bg-slate-900 border border-slate-850 hover:bg-slate-850 text-slate-400"
+                          }`}
+                        >
+                          {telegramSettings?.isEnabled && telegramSettings?.botToken && telegramSettings?.chatId ? (
+                            <>
+                              <Check className="w-4 h-4 text-slate-950 stroke-[3]" />
+                              XABARNOMA FAOL
+                            </>
+                          ) : (
+                            <>
+                              <X className="w-4 h-4 text-slate-400 stroke-[3]" />
+                              FAOL EMAS
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="text-[10px] text-slate-400 bg-slate-950/40 p-3 rounded border border-slate-900/60 leading-relaxed font-sans mt-2">
+                      💡 **Qanday sozlash kerak?** 
+                      1. Telegramda <a href="https://t.me/BotFather" target="_blank" rel="noreferrer" className="text-cyan-400 underline">@BotFather</a> botini qidirib oling va <code className="bg-slate-900 px-1 py-0.5 rounded text-cyan-300">/newbot</code> buyrug'i bilan yangi bot yarating. Chiqqan API tokenini nusxalab tepadagi **Bot Token** maydoniga joylang. 
+                      2. <a href="https://t.me/userinfobot" target="_blank" rel="noreferrer" className="text-cyan-400 underline">@userinfobot</a> ga xabar yozib o'zingizning shaxsiy Telegram IDingizni aniqlang va uni **Chat ID (Shaxsiy ID)** maydoniga joylang. 
+                      3. Yaratgan botingizga kirib, albatta <code className="bg-slate-900 px-1 py-0.5 rounded text-cyan-300">/start</code> ni bosib qo'ying (aks holda bot sizga xabar yubora olmaydi).
                     </div>
                   </div>
                 </div>

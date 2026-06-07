@@ -276,6 +276,58 @@ Do'stona, ishonchli, ekspert va sotuvchi ohangda (Uzbek tilida) javob bering.
   }
 });
 
+// API: Telegram Notification proxy
+app.post("/api/telegram-notify", async (req, res) => {
+  const { name, phone, message, botToken, chatId } = req.body;
+
+  if (!name || !phone || !message) {
+    return res.status(400).json({ error: "Ism, telefon raqam va xabar bo'sh bo'lishi mumkin emas." });
+  }
+
+  // Use parameters from request or check process environment
+  const finalBotToken = botToken || process.env.TELEGRAM_BOT_TOKEN;
+  const finalChatId = chatId || process.env.TELEGRAM_CHAT_ID;
+
+  if (!finalBotToken || !finalChatId) {
+    console.log("Telegram bot not configured yet. Payload received:", { name, phone, message });
+    return res.json({ 
+      success: true, 
+      notConfigured: true, 
+      message: "Xabar saqlandi (Telegram sozlanmagan)" 
+    });
+  }
+
+  try {
+    const textMessage = `🎯 *Yangi Murojaat!*\n\n` +
+      `👤 *Ism:* ${name}\n` +
+      `📞 *Tel:* ${phone}\n` +
+      `✉️ *Xabar:* ${message}\n\n` +
+      `⏱️ *Vaqt:* ${new Date().toLocaleString('uz-UZ')}`;
+
+    const url = `https://api.telegram.org/bot${finalBotToken}/sendMessage`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: finalChatId,
+        text: textMessage,
+        parse_mode: "Markdown",
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Telegram API response error:", errText);
+      return res.status(500).json({ error: "Telegramga yuborishda xatolik yuz berdi", details: errText });
+    }
+
+    res.json({ success: true, message: "Telegramga muvaffaqiyatli yuborildi!" });
+  } catch (err: any) {
+    console.error("Telegram submit error:", err);
+    res.status(500).json({ error: "Telegram ulanishida ichki xatolik", details: err.message });
+  }
+});
+
 // Serve frontend application with Vite middleware or static serving
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
