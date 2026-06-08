@@ -819,7 +819,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans tracking-normal antialiased text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 font-sans tracking-normal antialiased text-slate-100 flex flex-col justify-between selection:bg-nyanza selection:text-slate-950 relative overflow-hidden">
       
       {/* Dynamic Navigation */}
       <nav className="fixed top-0 inset-x-0 bg-slate-950/75 backdrop-blur-md border-b border-slate-900 z-50">
@@ -856,12 +856,12 @@ export default function App() {
                 title={isDark ? "Kunduzgi rejim (Light Mode) ga o'tish" : "Tungi rejim (Dark Mode) ga o'tish"}
               >
                 <span className="text-[8px] font-mono font-bold text-slate-400">TUNGI:</span>
-                <span className={`text-[8px] font-mono font-black ${isDark ? "text-cyan-400" : "text-slate-500"}`}>
+                <span className={`text-[8px] font-mono font-black ${isDark ? "text-nyanza" : "text-slate-500"}`}>
                   {isDark ? "ON" : "OFF"}
                 </span>
                 {/* Micro toggle graphic */}
-                <div className={`w-4 h-2.5 rounded-full border border-slate-700 p-0.5 flex items-center transition-colors ${isDark ? "bg-cyan-900/60" : "bg-slate-950"}`}>
-                  <div className={`w-1.5 h-1.5 rounded-full bg-white transition-all transform duration-200 ${isDark ? "translate-x-1 border border-cyan-400 bg-cyan-400" : "translate-x-0"}`} />
+                <div className={`w-4 h-2.5 rounded-full border border-slate-700 p-0.5 flex items-center transition-colors ${isDark ? "bg-nyanza/30" : "bg-slate-950"}`}>
+                  <div className={`w-1.5 h-1.5 rounded-full bg-white transition-all transform duration-200 ${isDark ? "translate-x-1 border border-nyanza bg-nyanza" : "translate-x-0"}`} />
                 </div>
               </div>
             </div>
@@ -873,7 +873,7 @@ export default function App() {
               href="#home"
               onClick={(e) => handleNavClick(e, "home")}
               className={`transition duration-200 ${
-                activeSection === "home" ? "font-bold text-cyan-400" : "text-slate-400 hover:text-slate-100"
+                activeSection === "home" ? "font-bold text-nyanza" : "text-slate-400 hover:text-slate-100"
               }`}
             >
               Asosiy
@@ -882,7 +882,7 @@ export default function App() {
               href="#skills"
               onClick={(e) => handleNavClick(e, "skills")}
               className={`transition duration-200 ${
-                activeSection === "skills" ? "font-bold text-cyan-400" : "text-slate-400 hover:text-slate-100"
+                activeSection === "skills" ? "font-bold text-nyanza" : "text-slate-400 hover:text-slate-100"
               }`}
             >
               Ko'nikmalar
@@ -891,7 +891,7 @@ export default function App() {
               href="#threatmap"
               onClick={(e) => handleNavClick(e, "threatmap")}
               className={`transition duration-200 ${
-                activeSection === "threatmap" ? "font-bold text-cyan-400" : "text-slate-400 hover:text-slate-100"
+                activeSection === "threatmap" ? "font-bold text-nyanza" : "text-slate-400 hover:text-slate-100"
               }`}
             >
               Threat Map
@@ -900,7 +900,7 @@ export default function App() {
               href="#sandbox"
               onClick={(e) => handleNavClick(e, "sandbox")}
               className={`transition duration-200 ${
-                activeSection === "sandbox" ? "font-bold text-cyan-400" : "text-slate-400 hover:text-slate-100"
+                activeSection === "sandbox" ? "font-bold text-nyanza" : "text-slate-400 hover:text-slate-100"
               }`}
             >
               Sandbox Pro
@@ -1003,28 +1003,28 @@ export default function App() {
                 <a
                   href="#home"
                   onClick={(e) => handleNavClick(e, "home")}
-                  className={`py-1 transition ${activeSection === "home" ? "text-cyan-400 font-bold" : "text-slate-400 hover:text-slate-100"}`}
+                  className={`py-1 transition ${activeSection === "home" ? "text-nyanza font-bold" : "text-slate-400 hover:text-slate-100"}`}
                 >
                   Asosiy
                 </a>
                 <a
                   href="#skills"
                   onClick={(e) => handleNavClick(e, "skills")}
-                  className={`py-1 transition ${activeSection === "skills" ? "text-cyan-400 font-bold" : "text-slate-400 hover:text-slate-100"}`}
+                  className={`py-1 transition ${activeSection === "skills" ? "text-nyanza font-bold" : "text-slate-400 hover:text-slate-100"}`}
                 >
                   Ko'nikmalar
                 </a>
                 <a
                   href="#threatmap"
                   onClick={(e) => handleNavClick(e, "threatmap")}
-                  className={`py-1 transition ${activeSection === "threatmap" ? "text-cyan-400 font-bold" : "text-slate-400 hover:text-slate-100"}`}
+                  className={`py-1 transition ${activeSection === "threatmap" ? "text-nyanza font-bold" : "text-slate-400 hover:text-slate-100"}`}
                 >
                   Threat Map
                 </a>
                 <a
                   href="#sandbox"
                   onClick={(e) => handleNavClick(e, "sandbox")}
-                  className={`py-1 transition ${activeSection === "sandbox" ? "text-cyan-400 font-bold" : "text-slate-400 hover:text-slate-100"}`}
+                  className={`py-1 transition ${activeSection === "sandbox" ? "text-nyanza font-bold" : "text-slate-400 hover:text-slate-100"}`}
                 >
                   Sandbox Pro
                 </a>
@@ -1114,13 +1114,13 @@ export default function App() {
         <section id="home" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center justify-between min-h-[500px] relative">
           
           {/* Cyber decorative grid graphics in background */}
-          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.18)_0%,transparent_60%)] z-0" />
+          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(200,249,4,0.18)_0%,transparent_60%)] z-0" />
           
           <div className="lg:col-span-7 space-y-6 relative z-10 text-left">
-            <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-semibold tracking-wide text-cyan-400">
+            <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-semibold tracking-wide text-nyanza">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nyanza opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-nyanza"></span>
               </span>
               <span>SUN'IY INTELLEKT & KIBERXAVFSIZLIK PORTALI</span>
             </span>
@@ -1146,7 +1146,7 @@ export default function App() {
               <a
                 href="#threatmap"
                 onClick={(e) => handleNavClick(e, "threatmap")}
-                className="flex items-center justify-center gap-2 font-mono text-xs font-bold px-6 py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-450 text-slate-950 tracking-wide transition duration-300 shadow-lg hover:shadow-cyan-500/25 cursor-pointer"
+                className="flex items-center justify-center gap-2 font-mono text-xs font-bold px-6 py-3.5 rounded-xl bg-nyanza hover:opacity-90 hover:scale-[1.02] text-slate-950 tracking-wide transition duration-300 shadow-lg shadow-nyanza/25 cursor-pointer"
               >
                 <span>LIVE THREAT MAPNI KO'RISh</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
@@ -1158,18 +1158,18 @@ export default function App() {
                 className="flex items-center justify-center gap-2 font-mono text-xs font-bold px-6 py-3.5 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-slate-600 text-slate-300 hover:text-white transition duration-300 cursor-pointer"
               >
                 <span>INTERACTIVE MIN-TOOLS</span>
-                <Zap className="w-4 h-4 text-cyan-400" />
+                <Zap className="w-4 h-4 text-nyanza animate-pulse" />
               </a>
             </div>
 
             {/* Quick trust metrics panel */}
             <div className="border-t border-slate-900 pt-6 grid grid-cols-3 gap-4 max-w-md">
               <div>
-                <span className="block text-xl font-extrabold font-mono text-cyan-400">1,500+</span>
+                <span className="block text-xl font-extrabold font-mono text-nyanza">1,500+</span>
                 <span className="text-slate-500 text-[10px] uppercase font-mono tracking-wider">AI Bot Users</span>
               </div>
               <div>
-                <span className="block text-xl font-extrabold font-mono text-emerald-400">98%</span>
+                <span className="block text-xl font-extrabold font-mono text-nyanza">98%</span>
                 <span className="text-slate-500 text-[10px] uppercase font-mono tracking-wider">Audit Accuracy</span>
               </div>
               <div>
@@ -2208,7 +2208,7 @@ export default function App() {
 
       {/* 👑 DYNAMIC 3D GLASSMORPHIC BUBBLE MENU */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm sm:max-w-md px-4 pointer-events-none">
-        <div className="relative bg-gradient-to-r from-[#1E5CE3] to-[#2563EB]/95 backdrop-blur-xl border border-white/20 rounded-full py-2 px-3 sm:px-5 flex items-center justify-between gap-1 shadow-[0_16px_36px_rgba(26,92,229,0.35),inset_0_2px_4px_rgba(255,255,255,0.25)] pointer-events-auto">
+        <div className="relative bg-slate-900/90 backdrop-blur-xl border border-nyanza/20 rounded-full py-2 px-3 sm:px-5 flex items-center justify-between gap-1 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.05)] pointer-events-auto">
           {[
             { id: "home", label: "Asosiy", icon: Home },
             { id: "skills", label: "Skills", icon: Cpu },
@@ -2230,17 +2230,17 @@ export default function App() {
                 {isActive ? (
                   <motion.div
                     layoutId="activeBubbleMenuCircle"
-                    className="absolute -top-7 w-12 h-12 rounded-full bg-white/25 backdrop-blur-lg border border-white/50 shadow-[inset_0_4px_10px_rgba(255,255,255,0.45),0_10px_20px_rgba(26,92,229,0.3)] flex items-center justify-center"
+                    className="absolute -top-7 w-12 h-12 rounded-full bg-nyanza border border-white/10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5),0_10px_20px_rgba(200,249,4,0.4)] flex items-center justify-center"
                     transition={{ type: "spring", stiffness: 380, damping: 24 }}
                   >
-                    <IconComponent className="w-5 h-5 text-white" />
-                    <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
+                    <IconComponent className="w-5 h-5 text-slate-950 stroke-[2.5]" />
+                    <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
                   </motion.div>
                 ) : (
-                  <IconComponent className="w-5 h-5 text-blue-100 group-hover:text-white transition-all group-hover:scale-115" />
+                  <IconComponent className="w-5 h-5 text-slate-400 group-hover:text-nyanza transition-all group-hover:scale-115" />
                 )}
                 
-                <span className={`text-[8px] font-mono mt-1 font-semibold leading-none ${isActive ? "opacity-0 mt-6" : "text-blue-200 group-hover:text-white"} transition-all duration-300`}>
+                <span className={`text-[8px] font-mono mt-1 font-semibold leading-none ${isActive ? "opacity-0 mt-6" : "text-slate-500 group-hover:text-nyanza"} transition-all duration-300`}>
                   {item.label}
                 </span>
               </a>

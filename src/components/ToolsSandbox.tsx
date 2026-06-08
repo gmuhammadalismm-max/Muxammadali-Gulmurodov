@@ -150,7 +150,7 @@ export default function ToolsSandbox() {
     <div id="sandbox-container" className="bg-slate-950/40 border border-slate-900 rounded-2xl overflow-hidden p-6 shadow-xl">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-900 pb-5 mb-6">
         <div>
-          <span className="text-xs text-cyan-400 font-mono tracking-widest uppercase">Eksperimentlar xonasi</span>
+          <span className="text-xs text-nyanza font-mono tracking-widest uppercase">Eksperimentlar xonasi</span>
           <h2 className="text-2xl font-bold font-sans text-slate-100 tracking-tight mt-1">
             🛠️ Interactive Tools Sandbox
           </h2>
@@ -166,7 +166,7 @@ export default function ToolsSandbox() {
             id="tab-phishdetector"
             className={`cursor-pointer px-4 py-2 font-mono text-xs rounded-lg transition duration-200 select-none ${
               activeTab === "phish"
-                ? "bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-950/20"
+                ? "bg-nyanza text-slate-950 font-bold shadow-md shadow-nyanza/20"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -177,7 +177,7 @@ export default function ToolsSandbox() {
             id="tab-seoanalyzer"
             className={`cursor-pointer px-4 py-2 font-mono text-xs rounded-lg transition duration-200 select-none ${
               activeTab === "seo"
-                ? "bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-950/20"
+                ? "bg-nyanza text-slate-950 font-bold shadow-md shadow-nyanza/20"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -209,7 +209,7 @@ export default function ToolsSandbox() {
                       value={phishUrl}
                       onChange={(e) => setPhishUrl(e.target.value)}
                       placeholder="Masalan: payme-cabinet-bonus.xyz yoki click.uz"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-nyanza focus:ring-1 focus:ring-nyanza transition"
                     />
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export default function ToolsSandbox() {
                   type="submit"
                   disabled={phishLoading || !phishUrl.trim()}
                   id="phish-scan-btn"
-                  className="w-full flex items-center justify-center gap-2 cursor-pointer bg-slate-100 font-semibold hover:bg-cyan-400 hover:text-slate-950 text-slate-950 text-xs py-2 rounded-lg font-mono transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 cursor-pointer bg-slate-100 font-semibold hover:bg-nyanza hover:text-slate-950 text-slate-950 text-xs py-2 rounded-lg font-mono transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {phishLoading ? (
                     <>
@@ -260,12 +260,12 @@ export default function ToolsSandbox() {
             {phishLoading && (
               <div className="h-64 rounded-xl border border-slate-900 bg-slate-950 flex flex-col justify-center items-center px-6">
                 <div className="relative mb-5 flex h-10 w-10 items-center justify-center">
-                  <span className="absolute animate-ping inline-flex h-full w-full rounded-full bg-cyan-700 opacity-60" />
-                  <Loader2 className="w-6 h-6 text-cyan-400 animate-spin" />
+                  <span className="absolute animate-ping inline-flex h-full w-full rounded-full bg-nyanza/30 opacity-60" />
+                  <Loader2 className="w-6 h-6 text-nyanza animate-spin" />
                 </div>
                 <div className="text-center font-mono text-[11px] text-slate-400 space-y-1">
                   <p>Initializing PhishDetector Local sandbox heuristics...</p>
-                  <p className="text-teal-500">Checking SSL, WHOIS patterns, and entropy status...</p>
+                  <p className="text-nyanza">Checking SSL, WHOIS patterns, and entropy status...</p>
                 </div>
               </div>
             )}
@@ -357,7 +357,7 @@ export default function ToolsSandbox() {
                     value={seoUrl}
                     onChange={(e) => setSeoUrl(e.target.value)}
                     placeholder="Masalan: kun.uz, solihacoffee.uz, daryo.uz..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-nyanza transition"
                   />
                 </div>
 
@@ -365,7 +365,7 @@ export default function ToolsSandbox() {
                   type="submit"
                   disabled={seoLoading || !seoUrl.trim()}
                   id="seo-scan-btn"
-                  className="w-full flex items-center justify-center gap-2 cursor-pointer bg-cyan-500 text-slate-950 font-bold hover:bg-cyan-400 text-xs py-2 rounded-lg font-mono transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 cursor-pointer bg-nyanza text-slate-950 font-bold hover:opacity-90 text-xs py-2 rounded-lg font-mono transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {seoLoading ? (
                     <>
@@ -414,11 +414,11 @@ export default function ToolsSandbox() {
             {seoLoading && (
               <div className="h-72 rounded-xl border border-slate-900 bg-slate-950 flex flex-col justify-center items-center px-6">
                 <div className="relative mb-5 flex h-10 w-10 items-center justify-center animate-spin">
-                  <Loader2 className="w-6 h-6 text-cyan-400" />
+                  <Loader2 className="w-6 h-6 text-nyanza" />
                 </div>
                 <div className="text-center font-mono text-[11px] text-slate-400 space-y-1">
                   <p>Initializing Real-time Crawler for SEO analysis on {seoUrl}...</p>
-                  <p className="text-cyan-400">Requesting digital marketing recommendation suite from Gemini 3.5...</p>
+                  <p className="text-nyanza">Requesting digital marketing recommendation suite from Gemini 3.5...</p>
                 </div>
               </div>
             )}
@@ -456,17 +456,17 @@ export default function ToolsSandbox() {
                   <div className="bg-slate-900/30 border border-slate-900 rounded-lg p-3">
                     <div className="flex justify-between text-xs mb-1.5 font-mono text-slate-400">
                       <span>Mobil moslashuvchanligi</span>
-                      <span className="text-cyan-400 font-bold">{seoResult.speedScore.mobile}%</span>
+                      <span className="text-nyanza font-bold">{seoResult.speedScore.mobile}%</span>
                     </div>
-                    <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-900">
-                      <div className="bg-cyan-500 h-full rounded-full" style={{ width: `${seoResult.speedScore.mobile}%` }} />
+                    <div className="w-full bg-slate-955 h-2 rounded-full overflow-hidden border border-slate-900">
+                      <div className="bg-nyanza h-full rounded-full" style={{ width: `${seoResult.speedScore.mobile}%` }} />
                     </div>
                   </div>
                 </div>
 
                 {/* AI generated report markdown */}
                 <div className="border border-slate-900 rounded-lg p-4 bg-slate-905/30 max-h-[240px] overflow-y-auto text-xs space-y-3 text-slate-300">
-                  <div className="flex items-center space-x-1.5 text-cyan-400 font-mono text-[10px] uppercase tracking-wider mb-2 font-bold">
+                  <div className="flex items-center space-x-1.5 text-nyanza font-mono text-[10px] uppercase tracking-wider mb-2 font-bold">
                     <Sparkles className="w-3.5 h-3.5 shrink-0" />
                     <span>Gemini AI tahlili va SMM takliflari</span>
                   </div>

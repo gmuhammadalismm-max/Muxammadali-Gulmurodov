@@ -143,15 +143,15 @@ export default function CyberThreatMap() {
   };
 
   return (
-    <div id="threat-map-section" className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 bg-slate-950/80 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md shadow-2xl shadow-cyan-950/20">
+    <div id="threat-map-section" className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 bg-slate-950/80 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md shadow-2xl shadow-nyanza/5">
       
       {/* Visual Live Cyber-Grid Map on Left */}
       <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-6">
         <div>
-          <div className="flex items-center space-x-2 text-emerald-400 font-mono text-xs tracking-wider uppercase mb-1">
+          <div className="flex items-center space-x-2 text-nyanza font-mono text-xs tracking-wider uppercase mb-1">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nyanza opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-nyanza"></span>
             </span>
             <span>Real vaqtdagi tahdidlar tahlili</span>
           </div>
@@ -167,7 +167,7 @@ export default function CyberThreatMap() {
         <div className="relative w-full h-64 md:h-80 bg-slate-950 rounded-xl border border-slate-900 overflow-hidden flex items-center justify-center">
           
           {/* Cyberpunk Radar Lines Backdrop */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(8,47,73,0.3)_0%,transparent_70%)] animate-pulse" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,249,4,0.08)_0%,transparent_70%)] animate-pulse" />
           <div className="absolute inset-x-0 top-0 h-px bg-slate-900 border-dashed border-b" />
           <div className="absolute inset-y-0 left-0 w-px bg-slate-900 border-dashed border-r" />
           <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-800/40" />
@@ -176,11 +176,11 @@ export default function CyberThreatMap() {
           {/* Scanning radar sweep animation */}
           <div className="absolute w-full h-full border border-slate-900 rounded-full scale-[0.6] opacity-30" />
           <div className="absolute w-full h-full border border-slate-900 rounded-full scale-[0.3] opacity-50" />
-          <div className="absolute left-1/2 top-1/2 w-48 h-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-teal-500/10" />
-          <div className="absolute left-1/2 top-1/2 w-80 h-80 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/5" />
+          <div className="absolute left-1/2 top-1/2 w-48 h-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-nyanza/10" />
+          <div className="absolute left-1/2 top-1/2 w-80 h-80 -translate-x-1/2 -translate-y-1/2 rounded-full border border-nyanza/5" />
           
           <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-            <Globe className="w-64 h-64 text-cyan-500 animate-[spin_40s_linear_infinite]" />
+            <Globe className="w-64 h-64 text-nyanza animate-[spin_40s_linear_infinite]" />
           </div>
 
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 200">
@@ -250,12 +250,12 @@ export default function CyberThreatMap() {
           <div className="absolute bottom-2 left-3 flex space-x-4 bg-slate-950/90 border border-slate-900 px-3 py-1.5 rounded-md backdrop-blur-sm">
             <div className="text-center">
               <span className="text-[9px] text-slate-500 block uppercase font-mono">Qo'lga Olingan</span>
-              <span className="text-xs font-semibold text-cyan-400 font-mono">{stats.intercepted.toLocaleString()}</span>
+              <span className="text-xs font-semibold text-nyanza font-mono">{stats.intercepted.toLocaleString()}</span>
             </div>
             <div className="w-px bg-slate-900" />
             <div className="text-center">
               <span className="text-[9px] text-slate-500 block uppercase font-mono">Xavfsizlik darajasi</span>
-              <span className="text-xs font-semibold text-emerald-400 font-mono">{stats.shieldPower}%</span>
+              <span className="text-xs font-semibold text-nyanza font-mono">{stats.shieldPower}%</span>
             </div>
           </div>
           
@@ -263,7 +263,7 @@ export default function CyberThreatMap() {
           {activeScan && (
             <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[1px] flex flex-col justify-center items-center px-4">
               <div className="w-full max-w-xs space-y-3">
-                <div className="flex justify-between items-center text-xs font-mono text-cyan-400">
+                <div className="flex justify-between items-center text-xs font-mono text-nyanza">
                   <span className="flex items-center gap-1.5 animate-pulse">
                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                     KIBER-SCAN...
@@ -272,7 +272,7 @@ export default function CyberThreatMap() {
                 </div>
                 <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800">
                   <motion.div
-                    className="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full"
+                    className="bg-gradient-to-r from-nyanza to-slate-green h-full rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${scanProgress}%` }}
                     transition={{ duration: 0.3 }}
@@ -289,15 +289,15 @@ export default function CyberThreatMap() {
         {/* Defence Launch Action */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-slate-400 text-xs font-mono">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <ShieldCheck className="w-4 h-4 text-nyanza" />
             <span>IDS Firewall holati:</span>
-            <span className="text-emerald-400 font-bold uppercase animate-pulse">Aktiv</span>
+            <span className="text-nyanza font-bold uppercase animate-pulse">Aktiv</span>
           </div>
           <button
             onClick={triggerDiagnosticScan}
             disabled={activeScan}
             id="defend-scan-btn"
-            className="flex items-center space-x-2 font-mono text-xs px-4 py-2 border rounded-full bg-cyan-950/25 border-cyan-800 hover:border-cyan-400 text-cyan-400 hover:text-white cursor-pointer hover:shadow-lg hover:shadow-cyan-950/40 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center space-x-2 font-mono text-xs px-4 py-2 border rounded-full bg-nyanza/10 border-nyanza hover:bg-nyanza hover:text-slate-950 text-nyanza hover:shadow-lg hover:shadow-nyanza/20 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <Cpu className={`w-3.5 h-3.5 ${activeScan ? 'animate-spin' : ''}`} />
             <span>XAVFSIZLIK TIZIMINI SCAN QILISH</span>
@@ -350,7 +350,7 @@ export default function CyberThreatMap() {
                     <span className="text-slate-500">{f.direction === "Inbound" ? "📥" : "📤"} Manba:</span> {f.source}
                   </div>
                   <div className="text-slate-300">
-                    <span className="text-slate-500">🛡️ Natija:</span> <span className="text-cyan-400">{f.attackType}</span>
+                    <span className="text-slate-500">🛡️ Natija:</span> <span className="text-nyanza">{f.attackType}</span>
                   </div>
                 </motion.div>
               );
@@ -360,7 +360,7 @@ export default function CyberThreatMap() {
 
         {/* Interactive Diagnostic Scan Logs Stream */}
         {scanLogs.length > 0 && (
-          <div className="mt-2 pt-2 border-t border-slate-900 bg-slate-900/20 rounded p-1.5 space-y-1 text-[10px] text-cyan-400 max-h-[80px] overflow-y-auto">
+          <div className="mt-2 pt-2 border-t border-slate-900 bg-slate-900/20 rounded p-1.5 space-y-1 text-[10px] text-nyanza max-h-[80px] overflow-y-auto">
             {scanLogs.map((log, idx) => (
               <div key={idx} className="flex items-start gap-1">
                 <span>&gt;</span>
