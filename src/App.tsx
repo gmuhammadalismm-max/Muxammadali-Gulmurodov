@@ -316,7 +316,7 @@ export default function App() {
 
   // Light vs Dark Glassmorphism Mode State
   const [isDark, setIsDark] = useState<boolean>(() => {
-    const saved = localStorage.getItem("gmuhammadali_dark_mode");
+    const saved = sessionStorage.getItem("gmuhammadali_dark_mode");
     return saved !== "false"; // Default to dark mode (true) to match original dark tech-forward layout
   });
 
@@ -328,7 +328,7 @@ export default function App() {
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem("gmuhammadali_dark_mode", isDark ? "true" : "false");
+    sessionStorage.setItem("gmuhammadali_dark_mode", isDark ? "true" : "false");
   }, [isDark]);
 
   // Modals for Media, Articles, Images (requested "boshqa oynada ochilsin")
@@ -1117,23 +1117,23 @@ export default function App() {
           <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(200,249,4,0.18)_0%,transparent_60%)] z-0" />
           
           <div className="lg:col-span-7 space-y-6 relative z-10 text-left">
-            <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-semibold tracking-wide text-nyanza">
+            <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-sans font-bold tracking-wide text-nyanza">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nyanza opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-nyanza"></span>
               </span>
-              <span>SUN'IY INTELLEKT & KIBERXAVFSIZLIK PORTALI</span>
+              <span>Assalomu alaykum! Xush kelibsiz!</span>
             </span>
 
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-100 font-sans tracking-tight leading-none">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-100 font-display tracking-tight leading-none">
                 Muxammadali <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-nyanza via-slate-green to-olivine-light">
                   Gulmurodov
                 </span>
               </h1>
               
-              <h2 className="text-lg sm:text-xl font-medium text-slate-300 font-sans tracking-tight max-w-xl">
+              <h2 className="text-lg sm:text-xl font-medium text-slate-300 font-display tracking-tight max-w-xl">
                 Sun'iy intellekt yaratuvchisi, marketing strategi va kiberxavfsizlik bo'yicha mustaqil ekspert.
               </h2>
             </div>
@@ -1155,7 +1155,7 @@ export default function App() {
               <a
                 href="#sandbox"
                 onClick={(e) => handleNavClick(e, "sandbox")}
-                className="flex items-center justify-center gap-2 font-mono text-xs font-bold px-6 py-3.5 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-slate-600 text-slate-300 hover:text-white transition duration-300 cursor-pointer"
+                className="flex items-center justify-center gap-2 font-mono text-xs font-bold px-6 py-3.5 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-slate-600 text-slate-300 hover:text-slate-100 transition duration-300 cursor-pointer"
               >
                 <span>INTERACTIVE MIN-TOOLS</span>
                 <Zap className="w-4 h-4 text-nyanza animate-pulse" />
@@ -1192,7 +1192,7 @@ export default function App() {
         <section id="skills" className="space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs text-cyan-400 font-mono tracking-widest uppercase font-bold">MUTAXASSISLIK REYTINGI</span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-100 font-sans">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-100 font-display">
               Ko'nikmalar va Professional Yo'nalishlar
             </h2>
             <p className="text-slate-400 text-sm">
@@ -1300,7 +1300,7 @@ export default function App() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <span className="text-xs text-cyan-400 font-mono tracking-widest uppercase font-bold">KREATIV PORTFOLIO</span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-100 font-sans mt-0.5">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-100 font-display mt-0.5">
                 Eng Muhim Proyektlar va Yutuqlar
               </h2>
               <p className="text-slate-400 text-sm mt-1">
@@ -1398,7 +1398,7 @@ export default function App() {
               <Zap className="w-3.5 h-3.5 animate-pulse text-yellow-400" />
               <span>LOYIHA VA RESURSLAR PORTALI</span>
             </span>
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-100 font-sans">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-100 font-display">
               Media, Video darsliklar va Maqolalar
             </h2>
             <p className="text-slate-400 text-xs md:text-xs">
@@ -1488,7 +1488,7 @@ export default function App() {
         <section id="experience" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start scroll-mt-20">
           <div className="lg:col-span-5 space-y-4">
             <span className="text-xs text-cyan-400 font-mono tracking-widest uppercase font-bold">KARYERA TIMELINE</span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-100 font-sans">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-100 font-display">
               Ish Tajribasi va Amaliy Faoliyat
             </h2>
             <p className="text-slate-400 text-sm leading-relaxed">
@@ -1571,7 +1571,7 @@ export default function App() {
               <span>Secure Shell Transmission Port</span>
             </div>
 
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-100 font-sans">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-100 font-display">
               Keling, Birgalikda Yangi <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-green to-nyanza">
                 Cho'qqilarni Zabt Etamiz!

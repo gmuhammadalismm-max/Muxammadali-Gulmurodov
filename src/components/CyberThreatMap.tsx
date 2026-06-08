@@ -155,7 +155,7 @@ export default function CyberThreatMap() {
             </span>
             <span>Real vaqtdagi tahdidlar tahlili</span>
           </div>
-          <h3 className="text-xl font-semibold text-slate-100 font-sans tracking-tight">
+          <h3 className="text-xl font-semibold text-slate-100 font-display tracking-tight">
             🌍 Live Cyber Threat Map
           </h3>
           <p className="text-slate-400 text-sm mt-1">

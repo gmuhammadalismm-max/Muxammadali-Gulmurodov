@@ -151,7 +151,7 @@ export default function ToolsSandbox() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-900 pb-5 mb-6">
         <div>
           <span className="text-xs text-nyanza font-mono tracking-widest uppercase">Eksperimentlar xonasi</span>
-          <h2 className="text-2xl font-bold font-sans text-slate-100 tracking-tight mt-1">
+          <h2 className="text-2xl font-bold font-display text-slate-100 tracking-tight mt-1">
             🛠️ Interactive Tools Sandbox
           </h2>
           <p className="text-slate-400 text-xs mt-1 md:max-w-xl">
