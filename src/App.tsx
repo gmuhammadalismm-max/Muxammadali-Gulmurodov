@@ -320,6 +320,24 @@ export default function App() {
     return saved !== "false"; // Default to dark mode (true) to match original dark tech-forward layout
   });
 
+  // Dynamic Font Size Scaling State ("normal" | "large" | "xlarge")
+  const [fontSize, setFontSize] = useState<"normal" | "large" | "xlarge">((): any => {
+    return localStorage.getItem("gmuhammadali_font_size") || "large"; // Default to large to satisfy user's request for bigger fonts
+  });
+
+  // Track and apply root font-sizing dynamically
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (fontSize === "normal") {
+      root.style.fontSize = "15px";
+    } else if (fontSize === "large") {
+      root.style.fontSize = "17.5px"; // ~10% larger than default
+    } else if (fontSize === "xlarge") {
+      root.style.fontSize = "19.5px"; // ~22% larger than default
+    }
+    localStorage.setItem("gmuhammadali_font_size", fontSize);
+  }, [fontSize]);
+
   // Update HTML element to toggle classes dynamically
   useEffect(() => {
     const root = window.document.documentElement;
@@ -941,6 +959,31 @@ export default function App() {
               )}
             </button>
 
+            {/* Premium Font Sizer Adjuster Controller */}
+            <div className="flex items-center space-x-1 border border-slate-900 bg-slate-950/80 p-1 rounded-full mr-1.5" title="Shrift o'lchami">
+              <button
+                onClick={() => setFontSize("normal")}
+                className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[9px] font-black transition cursor-pointer ${fontSize === "normal" ? "bg-nyanza text-slate-950 scale-105 shadow" : "text-slate-400 hover:text-white"}`}
+                title="Kichik Shrift (A)"
+              >
+                A
+              </button>
+              <button
+                onClick={() => setFontSize("large")}
+                className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[11px] font-black transition cursor-pointer ${fontSize === "large" ? "bg-nyanza text-slate-950 scale-105 shadow" : "text-slate-400 hover:text-white"}`}
+                title="Kattaroq Shrift (A+)"
+              >
+                A+
+              </button>
+              <button
+                onClick={() => setFontSize("xlarge")}
+                className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[13px] font-black transition cursor-pointer ${fontSize === "xlarge" ? "bg-nyanza text-slate-950 scale-105 shadow" : "text-slate-400 hover:text-white"}`}
+                title="Eng Katta Shrift (A++)"
+              >
+                A++
+              </button>
+            </div>
+
             {/* Brand Theme Selector circles */}
             <div className="flex items-center space-x-1.5 border border-slate-900 bg-slate-950/80 p-1.5 rounded-full mr-2">
               <button
@@ -1084,6 +1127,31 @@ export default function App() {
                       </>
                     )}
                   </button>
+                </div>
+
+                {/* Mobile Font Sizer row */}
+                <div className="py-2 border-b border-slate-900 flex items-center justify-between col-span-2">
+                  <span className="text-[10px] text-slate-500 font-mono">SHRIFT O'LCHAMI:</span>
+                  <div className="flex items-center space-x-1 border border-slate-900 bg-slate-900/80 p-0.5 rounded-full">
+                    <button
+                      onClick={() => setFontSize("normal")}
+                      className={`px-2.5 py-1.5 rounded-full text-[9px] font-bold font-mono transition cursor-pointer ${fontSize === "normal" ? "bg-nyanza text-slate-950 scale-105" : "text-slate-400 hover:text-white"}`}
+                    >
+                      A
+                    </button>
+                    <button
+                      onClick={() => setFontSize("large")}
+                      className={`px-2.5 py-1.5 rounded-full text-[9px] font-bold font-mono transition cursor-pointer ${fontSize === "large" ? "bg-nyanza text-slate-950 scale-105" : "text-slate-400 hover:text-white"}`}
+                    >
+                      A+
+                    </button>
+                    <button
+                      onClick={() => setFontSize("xlarge")}
+                      className={`px-2.5 py-1.5 rounded-full text-[9px] font-bold font-mono transition cursor-pointer ${fontSize === "xlarge" ? "bg-nyanza text-slate-950 scale-105" : "text-slate-400 hover:text-white"}`}
+                    >
+                      A++
+                    </button>
+                  </div>
                 </div>
 
                 <button
