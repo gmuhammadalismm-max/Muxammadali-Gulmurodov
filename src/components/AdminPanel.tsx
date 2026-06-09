@@ -132,6 +132,70 @@ export default function AdminPanel({
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<AdminTab>("branding");
   
+  // Telegram test states
+  const [telegramTestLoading, setTelegramTestLoading] = useState(false);
+  const [telegramTestStatus, setTelegramTestStatus] = useState<{
+    success: boolean;
+    message: string;
+    details?: string;
+  } | null>(null);
+
+  const handleTestTelegram = async () => {
+    if (!telegramSettings?.botToken || !telegramSettings?.chatId) {
+      setTelegramTestStatus({
+        success: false,
+        message: "Bot Token va Chat ID to'ldirilmagan!",
+      });
+      return;
+    }
+
+    setTelegramTestLoading(true);
+    setTelegramTestStatus(null);
+
+    try {
+      const response = await fetch("/api/telegram-notify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "🤖 Sinov Foydalanuvchisi",
+          phone: "+998 (33) 293-04-07",
+          message: "Ushbu xabar portfoliongiz tahrirlash tizimidan sinov tariqasida yuborildi. Agar buni o'qiyotgan bo'lsangiz, Telegram sozlamalaringiz muvaffaqiyatli bog'landi!",
+          botToken: telegramSettings.botToken,
+          chatId: telegramSettings.chatId,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success && !data.notConfigured) {
+        setTelegramTestStatus({
+          success: true,
+          message: "Tabriklaymiz! Sinov xabari Telegram botingizga muvaffaqiyatli yuborildi.",
+        });
+      } else if (data.notConfigured) {
+        setTelegramTestStatus({
+          success: false,
+          message: "Telegram bot sozlanmagan. Tizim parametrlarni qabul qilmadi.",
+        });
+      } else {
+        setTelegramTestStatus({
+          success: false,
+          message: data.error || "Telegramga yuborishda xatolik yuz berdi.",
+          details: data.details || JSON.stringify(data),
+        });
+      }
+    } catch (err: any) {
+      setTelegramTestStatus({
+        success: false,
+        message: "Server bilan ulanishda xatolik yuz berdi.",
+        details: err.message,
+      });
+    } finally {
+      setTelegramTestLoading(false);
+    }
+  };
+  
   // Custom Passcode settings
   const [currentPasscodes, setCurrentPasscodes] = useState<string[]>(() => {
     const saved = localStorage.getItem("gmuhammadali_passcodes");
@@ -2153,7 +2217,7 @@ export default function AdminPanel({
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
                       <div>
                         <label className="block text-[10px] text-slate-500 uppercase mb-1">Telegram Bot Token (HTTP API Key)</label>
                         <input
@@ -2175,30 +2239,69 @@ export default function AdminPanel({
                           className="w-full bg-slate-950 border border-slate-850 rounded px-3 py-1.5 text-slate-100 focus:outline-none placeholder-slate-700"
                         />
                       </div>
-
-                      <div className="flex flex-col justify-end">
-                        <button
-                          onClick={() => setTelegramSettings(prev => ({ ...prev, isEnabled: !prev.isEnabled }))}
-                          className={`w-full py-2 px-4 cursor-pointer font-bold rounded tracking-wider flex items-center justify-center gap-2 transition duration-300 ${
-                            telegramSettings?.isEnabled && telegramSettings?.botToken && telegramSettings?.chatId
-                              ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950" 
-                              : "bg-slate-900 border border-slate-850 hover:bg-slate-850 text-slate-400"
-                          }`}
-                        >
-                          {telegramSettings?.isEnabled && telegramSettings?.botToken && telegramSettings?.chatId ? (
-                            <>
-                              <Check className="w-4 h-4 text-slate-950 stroke-[3]" />
-                              XABARNOMA FAOL
-                            </>
-                          ) : (
-                            <>
-                              <X className="w-4 h-4 text-slate-400 stroke-[3]" />
-                              FAOL EMAS
-                            </>
-                          )}
-                        </button>
-                      </div>
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      <button
+                        onClick={() => setTelegramSettings(prev => ({ ...prev, isEnabled: !prev.isEnabled }))}
+                        className={`w-full py-2.5 px-4 cursor-pointer font-bold rounded tracking-wider flex items-center justify-center gap-2 transition duration-300 ${
+                          telegramSettings?.isEnabled && telegramSettings?.botToken && telegramSettings?.chatId
+                            ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950" 
+                            : "bg-slate-900 border border-slate-850 hover:bg-slate-850 text-slate-400"
+                        }`}
+                      >
+                        {telegramSettings?.isEnabled && telegramSettings?.botToken && telegramSettings?.chatId ? (
+                          <>
+                            <Check className="w-4 h-4 text-slate-950 stroke-[3]" />
+                            XABARNOMA FAOL
+                          </>
+                        ) : (
+                          <>
+                            <X className="w-4 h-4 text-slate-400 stroke-[3]" />
+                            FAOL EMAS
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        onClick={handleTestTelegram}
+                        disabled={telegramTestLoading}
+                        className="w-full py-2.5 px-4 cursor-pointer font-bold rounded bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-800 disabled:text-slate-500 text-slate-950 flex items-center justify-center gap-2 transition duration-300"
+                      >
+                        {telegramTestLoading ? (
+                          <span className="inline-block w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <Send className="w-4 h-4" />
+                        )}
+                        SINOV XABARI YUBORISH
+                      </button>
+                    </div>
+
+                    {telegramTestStatus && (
+                      <div className={`p-4 rounded-lg text-xs font-sans border ${
+                        telegramTestStatus.success 
+                          ? "bg-emerald-950/40 border-emerald-800 text-emerald-200" 
+                          : "bg-rose-950/40 border-rose-800 text-rose-200"
+                      }`}>
+                        <div className="font-bold flex items-center gap-1.5">
+                          {telegramTestStatus.success ? (
+                            <Check className="w-4.5 h-4.5 text-emerald-400" />
+                          ) : (
+                            <X className="w-4.5 h-4.5 text-rose-400" />
+                          )}
+                          {telegramTestStatus.message}
+                        </div>
+                        {telegramTestStatus.details && (
+                          <div className="mt-2 p-2 bg-slate-950 rounded border border-slate-850 font-mono text-[11px] overflow-auto max-h-[140px] text-slate-300 leading-relaxed">
+                            <strong>Telegram API xatosi tafsiloti:</strong>
+                            <pre className="mt-1 whitespace-pre-wrap">{telegramTestStatus.details}</pre>
+                            <span className="block mt-2 text-slate-400 font-sans text-[10px]">
+                              💡 Boshqotirma yechimi: Botni Telegramda yozib topgandan so'ng, unga albatta <strong>/start</strong> buyrug'ini bering va Bot Tokeniz/Chat IDingiz to'g'riligiga ishonch bosil qiling!
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     <div className="text-[10px] text-slate-400 bg-slate-950/40 p-3 rounded border border-slate-900/60 leading-relaxed font-sans mt-2">
                       💡 **Qanday sozlash kerak?** 

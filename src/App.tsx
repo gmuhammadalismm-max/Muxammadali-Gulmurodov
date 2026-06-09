@@ -504,10 +504,12 @@ export default function App() {
           telegramSettings: DEFAULT_TELEGRAM,
         };
         setDoc(portfolioDocRef, initialPayload)
-          .catch((err) => handleFirestoreError(err, OperationType.WRITE, "state/portfolio"));
+          .catch((err) => {
+            console.warn("Firestore initialize error (will load locally):", err);
+          });
       }
     }, (error) => {
-      handleFirestoreError(error, OperationType.GET, "state/portfolio");
+      console.warn("Firestore database real-time stream offline. Running safely on cache fallback:", error);
     });
 
     return () => unsubscribe();
@@ -518,7 +520,7 @@ export default function App() {
     try {
       await setDoc(portfolioDocRef, updatedFields, { merge: true });
     } catch (err) {
-      handleFirestoreError(err, OperationType.WRITE, "state/portfolio");
+      console.warn("Firestore auto-save failed/blocked (using local cache):", err);
     }
   };
 
