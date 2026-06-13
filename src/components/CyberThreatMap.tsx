@@ -167,7 +167,7 @@ export default function CyberThreatMap() {
         <div className="relative w-full h-64 md:h-80 bg-slate-950 rounded-xl border border-slate-900 overflow-hidden flex items-center justify-center">
           
           {/* Cyberpunk Radar Lines Backdrop */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,249,4,0.08)_0%,transparent_70%)] animate-pulse" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(3, 86, 197, 0.15)_0%,transparent_70%)] animate-pulse" />
           <div className="absolute inset-x-0 top-0 h-px bg-slate-900 border-dashed border-b" />
           <div className="absolute inset-y-0 left-0 w-px bg-slate-900 border-dashed border-r" />
           <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-800/40" />

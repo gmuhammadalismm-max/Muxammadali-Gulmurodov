@@ -2,83 +2,83 @@
 @import "tailwindcss";
 
 :root {
-  /* LIGHT GLASSMORPHISM THEME (Volt Neon/Cyber Olive Premium Layout) */
-  --slate-950: #FAFDE6; /* Crisp premium light lime backgroud */
-  --slate-900: rgba(255, 255, 255, 0.6); /* Elegant glass card background */
-  --slate-850: rgba(200, 249, 4, 0.16); /* Volt neon accent divider lines */
-  --slate-800: rgba(200, 249, 4, 0.35); /* Bright highlights matching perfect neon look */
+  /* LIGHT GLASSMORPHISM THEME (Midnight Blue Ice Premium Layout) */
+  --slate-950: #F0F4FC; /* Light ice-blue background */
+  --slate-900: rgba(255, 255, 255, 0.65); /* Elegant glass card background */
+  --slate-850: rgba(3, 86, 197, 0.12); /* Cobalt accent divider lines */
+  --slate-800: rgba(3, 86, 197, 0.24); /* Subtly glowing Midnight Blue highlights */
   --slate-705: rgba(255, 255, 255, 0.88); /* Translucent button sheen */
-  --slate-700: #8FA202; /* Contrast olive green links & branding */
-  --slate-600: #788A01; /* Medium hover accent */
-  --slate-500: #3D4428; /* Highly readable moss-charcoal sub-texts and captions */
-  --slate-400: #1B200D; /* Heavy dark-olive description prose */
-  --slate-300: #1F250A; /* Solid dark moss font titles */
-  --slate-200: #121804; /* Heavy black-olive text for card titles */
-  --slate-100: #080C01; /* Absolute contrast headings */
+  --slate-700: #0356C5; /* Contrast Cobalt Midnight Blue links & branding */
+  --slate-600: #0247A3; /* Medium hover accent */
+  --slate-500: #1E3A8A; /* Highly readable deep sapphire sub-texts and captions */
+  --slate-400: #0F172A; /* Slate descriptions */
+  --slate-300: #1E293B; /* Solid slate font titles */
+  --slate-200: #0F172A; /* Heavy black-indigo text for card titles */
+  --slate-100: #02060E; /* Deep Midnight Blue absolute contrast headings */
 
-  /* Cyan Accent Overrides for #C8F904 Volt Theme Integration */
-  --cyan-950: #FAFDE6;
-  --cyan-900: rgba(255, 255, 255, 0.6);
-  --cyan-850: rgba(200, 249, 4, 0.16);
-  --cyan-800: rgba(200, 249, 4, 0.35);
-  --cyan-700: #8FA202;
-  --cyan-600: #788A01;
-  --cyan-500: #8FA202;
-  --cyan-400: #A8CE03;
-  --cyan-300: #C8F904;
-  --cyan-200: #121804;
-  --cyan-100: #080C01;
-  --cyan-50:  #FCFEEB;
+  /* Cyan Accent Overrides for #0356C5 Theme Integration */
+  --cyan-950: #F0F4FC;
+  --cyan-900: rgba(255, 255, 255, 0.65);
+  --cyan-850: rgba(3, 86, 197, 0.12);
+  --cyan-800: rgba(3, 86, 197, 0.24);
+  --cyan-700: #0356C5;
+  --cyan-600: #0247A3;
+  --cyan-500: #0356C5;
+  --cyan-400: #3B82F6;
+  --cyan-300: #60A5FA;
+  --cyan-200: #1E293B;
+  --cyan-100: #02060E;
+  --cyan-50:  #F8FAFC;
 
-  --nyanza: #4C5E03; /* Elegant rich dark olive for perfect light mode contrast */
-  --olivine-light: #708A02; /* Sophisticated accent olive range */
-  --slate-green: #5C7202; /* Strong readable premium olive */
-  --olivine-dark: #FAFDE6;
-  --olivine-card: rgba(255, 255, 255, 0.6);
+  --nyanza: #0356C5; /* Elegant rich cobalt blue for perfect light mode contrast */
+  --olivine-light: #3B82F6; /* Sophisticated accent blue range */
+  --slate-green: #0356C5; /* Strong readable premium blue */
+  --olivine-dark: #F0F4FC;
+  --olivine-card: rgba(255, 255, 255, 0.65);
 
-  --body-bg: #FAFDE6;
-  --body-grid: rgba(200, 249, 4, 0.1);
-  --body-color: #1B200D;
+  --body-bg: #F0F4FC;
+  --body-grid: rgba(3, 86, 197, 0.05);
+  --body-color: #0F172A;
 }
 
 :root.dark {
-  /* DARK GLASSMORPHISM THEME (Cyber Obsidian Volt-Neon Room Layout) */
-  --slate-950: #030501; /* Deep space black with subtle lime undertone */
-  --slate-900: rgba(14, 18, 10, 0.85); /* Heavy cyberpunk obsidian-lime container */
-  --slate-850: rgba(200, 249, 4, 0.12); /* Vibrant neon yellow-green border lines */
-  --slate-800: rgba(200, 249, 4, 0.28); /* Highly glowing cyber blueprint lines */
-  --slate-705: rgba(6, 10, 3, 0.94); /* Deep glass command deck buttons */
-  --slate-700: #C8F904; /* Volt color #C8F904 active state */
-  --slate-600: #A8CE03; /* Slightly darker lime state for clicks */
-  --slate-500: #D8FA42; /* Soft glowing yellow-lime details & descriptors */
-  --slate-400: #E6FAC3; /* Crisp silver-volt prose text */
-  --slate-300: #F3FEE0; /* Bright light-lime titles */
-  --slate-200: #F9FFF4; /* Pure contrast white-lime headers */
+  /* DARK GLASSMORPHISM THEME (Midnight Blue Premium dark Layout) */
+  --slate-950: #02060E; /* Deep midnight-blue background from reference image */
+  --slate-900: rgba(2, 6, 14, 0.85); /* Heavy luxury dark blue glass container */
+  --slate-850: rgba(3, 86, 197, 0.16); /* Vibrant cobalt-blue border lines */
+  --slate-800: rgba(3, 86, 197, 0.28); /* Glowing cyber blueprints/borders */
+  --slate-705: rgba(1, 4, 10, 0.94); /* Deep glass command deck buttons */
+  --slate-700: #0356C5; /* Vibrant Midnight Cobalt blue from image */
+  --slate-600: #0247A3; /* Slightly darker cobalt hover state */
+  --slate-500: #3B82F6; /* Soft glowing blue details & descriptors */
+  --slate-400: #93C5FD; /* Crisp silver-blue prose text */
+  --slate-300: #BFDBFE; /* Bright light-blue titles */
+  --slate-200: #EFF6FF; /* Pure contrast white-blue headers */
   --slate-100: #FFFFFF; /* Absolute contrast headers */
 
-  /* Cyan Accent Overrides for Premium Volt Cyber Deck */
-  --cyan-950: #030501;
-  --cyan-900: rgba(14, 18, 10, 0.85);
-  --cyan-850: rgba(200, 249, 4, 0.12);
-  --cyan-800: rgba(200, 249, 4, 0.28);
-  --cyan-700: #C8F904;
-  --cyan-600: #A8CE03;
-  --cyan-500: #C8F904;
-  --cyan-400: #D5FB2E;
-  --cyan-300: #E2FC6B;
-  --cyan-200: #F3FEE0;
+  /* Cyan Accent Overrides for Premium Midnight Blue Deck */
+  --cyan-950: #02060E;
+  --cyan-900: rgba(2, 6, 14, 0.85);
+  --cyan-850: rgba(3, 86, 197, 0.16);
+  --cyan-800: rgba(3, 86, 197, 0.28);
+  --cyan-700: #0356C5;
+  --cyan-600: #0247A3;
+  --cyan-500: #0356C5;
+  --cyan-400: #2563EB;
+  --cyan-300: #3B82F6;
+  --cyan-200: #EFF6FF;
   --cyan-100: #FFFFFF;
-  --cyan-50:  #080F02;
+  --cyan-50:  #010307;
 
-  --nyanza: #C8F904; /* Hex match */
-  --olivine-light: #C8F904;
-  --slate-green: #C8F904; /* Electric fluorescent highlight */
-  --olivine-dark: #030501;
-  --olivine-card: rgba(14, 18, 10, 0.85);
+  --nyanza: #0356C5; /* High contrast neon cobalt blue from image */
+  --olivine-light: #5296FD;
+  --slate-green: #0356C5;
+  --olivine-dark: #02060E;
+  --olivine-card: rgba(2, 6, 14, 0.85);
 
-  --body-bg: #030501;
-  --body-grid: rgba(200, 249, 4, 0.05); /* Premium grid lines tracking */
-  --body-color: #F3FEE0;
+  --body-bg: #02060E;
+  --body-grid: rgba(3, 86, 197, 0.05); /* Premium grid lines tracking in blue style */
+  --body-color: #EFF6FF;
 }
 
 @theme {
@@ -161,18 +161,18 @@ body {
 
 /* Premium High-Fidelity Cyber-Agency Card style matching the mockup design 1 to 1 */
 .cyber-card-premium {
-  background: rgba(13, 20, 39, 0.65);
+  background: var(--slate-900);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(200, 249, 4, 0.18);
+  border: 1px solid var(--slate-850);
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
   border-radius: 1.5rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cyber-card-premium:hover {
-  border-color: rgba(200, 249, 4, 0.45);
-  box-shadow: 0 15px 45px -5px rgba(200, 249, 4, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  border-color: var(--slate-700);
+  box-shadow: 0 15px 45px -5px rgba(3, 86, 197, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 /* Custom scrollbar matching active style */
@@ -188,4 +188,17 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--slate-800);
+}
+
+/* Custom premium border mapping overrides to guarantee high contrast in daylight/light mode and rich depth in dark mode */
+.border-slate-900, [class*="border-slate-900"],
+[class*="border-b-slate-900"], [class*="border-t-slate-900"], 
+[class*="border-l-slate-900"], [class*="border-r-slate-900"] {
+  border-color: var(--slate-850) !important;
+}
+
+.border-slate-800, [class*="border-slate-800"],
+[class*="border-b-slate-800"], [class*="border-t-slate-800"], 
+[class*="border-l-slate-800"], [class*="border-r-slate-800"] {
+  border-color: var(--slate-800) !important;
 }

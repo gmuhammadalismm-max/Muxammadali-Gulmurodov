@@ -1010,7 +1010,7 @@ export default function App() {
 
             <button
               onClick={() => setIsAdminOpen(true)}
-              className="font-mono text-xs font-bold px-3.5 py-2 rounded-full border border-slate-800 bg-slate-950 hover:bg-slate-900 hover:border-slate-700 text-slate-400 hover:text-white transition duration-200 flex items-center gap-1.5 cursor-pointer"
+              className="font-mono text-xs font-bold px-3.5 py-2 rounded-full border border-slate-800 bg-slate-950 hover:bg-slate-700 hover:border-slate-700 text-slate-400 hover:text-white transition duration-200 flex items-center gap-1.5 cursor-pointer"
               title="Muxammadali Admin Control Panel"
             >
               <ShieldCheck className={`w-3.5 h-3.5 text-${t.primary}`} />
@@ -1020,7 +1020,7 @@ export default function App() {
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, "contact")}
-              className={`font-mono text-xs font-bold px-4 py-2 rounded-full border border-${t.primary}/30 bg-${t.primary}/5 hover:border-${t.primary} text-${t.primary} hover:text-white transition duration-300`}
+              className={`font-mono text-xs font-bold px-4 py-2 rounded-full border border-${t.primary}/30 bg-${t.primary}/5 hover:bg-slate-700 hover:border-${t.primary} text-${t.primary} hover:text-white transition duration-300`}
             >
               KONSULTATSIYA OLISH
             </a>
@@ -1159,7 +1159,7 @@ export default function App() {
                     setMobileMenuOpen(false);
                     setIsAdminOpen(true);
                   }}
-                  className="font-bold text-center py-2.5 rounded-lg border border-slate-900 bg-slate-950 text-slate-400 hover:text-white tracking-normal cursor-pointer text-xs"
+                  className="font-bold text-center py-2.5 rounded-lg border border-slate-900 bg-slate-950 hover:bg-slate-700 text-slate-400 hover:text-white tracking-normal cursor-pointer text-xs transition duration-200"
                 >
                   🔐 SISTEMA KIRISh
                 </button>
@@ -1167,7 +1167,7 @@ export default function App() {
                 <a
                   href="#contact"
                   onClick={(e) => handleNavClick(e, "contact")}
-                  className={`font-bold text-center py-2.5 rounded-lg bg-${t.primary}/5 text-${t.primary} border border-${t.primary}/30 tracking-normal text-xs`}
+                  className={`font-bold text-center py-2.5 rounded-lg bg-${t.primary}/5 hover:bg-slate-700 text-${t.primary} hover:text-white border border-${t.primary}/30 tracking-normal text-xs transition duration-200`}
                 >
                   KONSULTATSIYA OLISH
                 </a>
@@ -1184,7 +1184,7 @@ export default function App() {
         <section id="home" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center justify-between min-h-[500px] relative">
           
           {/* Cyber decorative grid graphics in background */}
-          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(200,249,4,0.18)_0%,transparent_60%)] z-0" />
+          <div className="absolute inset-x-0 top-0 h-[400px] pointer-events-none select-none bg-[radial-gradient(ellipse_at_top,rgba(3,86,197,0.18)_0%,transparent_60%)] z-0" />
           
           <div className="lg:col-span-7 space-y-6 relative z-10 text-left">
             <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-sans font-bold tracking-wide text-nyanza">
@@ -2300,7 +2300,7 @@ export default function App() {
                 {isActive ? (
                   <motion.div
                     layoutId="activeBubbleMenuCircle"
-                    className="absolute -top-7 w-12 h-12 rounded-full bg-nyanza border border-white/10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5),0_10px_20px_rgba(200,249,4,0.4)] flex items-center justify-center"
+                    className="absolute -top-7 w-12 h-12 rounded-full bg-nyanza border border-white/10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5),0_10px_22px_rgba(3,86,197,0.55)] flex items-center justify-center"
                     transition={{ type: "spring", stiffness: 380, damping: 24 }}
                   >
                     <IconComponent className="w-5 h-5 text-slate-950 stroke-[2.5]" />
